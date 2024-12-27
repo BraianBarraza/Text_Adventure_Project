@@ -1,9 +1,14 @@
 package combat;
 
 public class Weapon {
-
     private String name;
     private int damage;
+
+
+    public Weapon(String name, int damage) {
+        this.name = name;
+        this.damage = damage;
+    }
 
     public String getName() {
         return name;
@@ -21,8 +26,8 @@ public class Weapon {
         this.damage = damage;
     }
 
-    public Weapon(String name, int damage) {
-        this.name = name;
-        this.damage = damage;
+    @Override
+    public String toString() {
+        return name + " (Damage: " + damage + ")";
     }
 }

@@ -1,23 +1,27 @@
 package characters;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Enemies {
 
-    public static class zombiesCollection{
-
-        Zombies basicZombie = new Zombies("Zombie", "It is another infected person, it moves slow", 100, 10);
-        Zombies dogZombie = new Zombies("Infected Dog", "It is an infected Dog! It moves pretty quick I can´t run away from it!", 50, 5);
-        Zombies policeZombie = new Zombies("Police Zombie", "The zombie has a bulletproof vest, I have to shot to the head", 120, 10);
-        Zombies mutatedZombie = new Zombies("Mutation", "It is a mutated Zombie! it is faster and stronger! i have to be careful", 120, 20);
-
+    public static List<Zombie> getZombies() {
+        List<Zombie> zombies = new ArrayList<>();
+        zombies.add(new Zombie("Zombie", "It is another infected person, it moves slow", 100, 10));
+        zombies.add(new Zombie("Infected Dog", "It is an infected Dog! It moves quickly, I can´t run away from it!", 50, 5));
+        zombies.add(new Zombie("Police Zombie", "The zombie has a bulletproof vest, I have to shoot to the head", 120, 10));
+        zombies.add(new Zombie("Mutation", "It is a mutated Zombie! It is faster and stronger! I have to be careful", 150, 20));
+        return zombies;
     }
 
-    public static class Zombies {
+    public static class Zombie {
         private String name;
         private String description;
         private int hp;
         private int damage;
 
-        public Zombies(String name, String description, int hp, int damage) {
+
+        public Zombie(String name, String description, int hp, int damage) {
             this.name = name;
             this.description = description;
             this.hp = hp;
@@ -28,16 +32,8 @@ public class Enemies {
             return name;
         }
 
-        public void setName(String name) {
-            this.name = name;
-        }
-
         public String getDescription() {
             return description;
-        }
-
-        public void setDescription(String description) {
-            this.description = description;
         }
 
         public int getHp() {
@@ -50,10 +46,6 @@ public class Enemies {
 
         public int getDamage() {
             return damage;
-        }
-
-        public void setDamage(int damage) {
-            this.damage = damage;
         }
     }
 }
