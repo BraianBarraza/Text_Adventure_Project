@@ -1,6 +1,7 @@
 package combat;
 
 import characters.Enemies.Zombie;
+import characters.Inventory;
 import characters.Player;
 
 public class CombatActions {
@@ -17,13 +18,11 @@ public class CombatActions {
 
     public void playerAttack(Player player, Zombie zombie) {
         if (zombie.getHp() > 0) {
-            int newHp = zombie.getHp() - player.getWeapon().getDamage();
+            int newHp = zombie.getHp() - player.currentDamage();
             zombie.setHp(newHp);
             System.out.println("You attack the zombie! The zombie still have HP: " + zombie.getHp());
         } else {
             System.out.println("You kill teh zombie!, that was close...");
         }
     }
-
-
 }

@@ -1,7 +1,6 @@
 package config;
 
 import map.Places.Place;
-import map.Places.Room;
 
 import java.util.Scanner;
 
@@ -16,11 +15,11 @@ public class GameCommands {
                     ? currentPlace.getCurrentRoom().getName()
                     : "No specific room"));
             System.out.println(currentPlace);
-            System.out.println("Type 'room [name]' to move to a room, or 'exit [direction]' to leave:");
+            System.out.println("Type 'room [name]' to move to a room, or 'exit [place]' to leave:");
 
             String command = sc.nextLine();
 
-            if (command.startsWith("room ")) {
+            if (command.startsWith("room")) {
                 String roomName = command.substring(5);
                 if (currentPlace.getRooms().containsKey(roomName)) {
                     currentPlace.setCurrentRoom(currentPlace.getRooms().get(roomName));
@@ -35,6 +34,7 @@ public class GameCommands {
                     return currentPlace.getExits().get(direction);
                 } else {
                     System.out.println("You can't leave from here!");
+                    System.out.println("You have to go to the");
                 }
             } else {
                 System.out.println("Invalid command!");

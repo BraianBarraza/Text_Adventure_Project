@@ -1,6 +1,6 @@
 package characters;
 
-import combat.Items;
+import combat.Item;
 import combat.Weapon;
 import java.util.Map;
 
@@ -8,9 +8,9 @@ public class Inventory {
 
     public static class PlayerInventory{
         private Map<String, Weapon> playerWeapons;
-        private Map<String, Items> playerItems;
+        private Map<String, Item> playerItems;
 
-        public PlayerInventory(Map<String, Weapon> playerWeapons, Map<String, Items> playerItems) {
+        public PlayerInventory(Map<String, Weapon> playerWeapons, Map<String, Item> playerItems) {
             this.playerWeapons = playerWeapons;
             this.playerItems = playerItems;
         }
@@ -23,11 +23,11 @@ public class Inventory {
             this.playerWeapons = playerWeapons;
         }
 
-        public Map<String, Items> getPlayerItems() {
+        public Map<String, Item> getPlayerItems() {
             return playerItems;
         }
 
-        public void setPlayerItems(Map<String, Items> playerItems) {
+        public void setPlayerItems(Map<String, Item> playerItems) {
             this.playerItems = playerItems;
         }
 

@@ -30,4 +30,5 @@ public class Weapon {
     public String toString() {
         return name + " (Damage: " + damage + ")";
     }
+
 }
