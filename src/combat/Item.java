@@ -2,12 +2,10 @@ package combat;
 
 public class Item {
 
-    public static class HealingItem{
-
+    public static class HealingItem extends Item {
         private String name;
         private String description;
         private int healingPoints;
-
 
         public HealingItem(String description, int healingPoints, String name) {
             this.name = name;
@@ -19,31 +17,12 @@ public class Item {
             return name;
         }
 
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getDescription() {
-            return description;
-        }
-
-        public void setDescription(String description) {
-            this.description = description;
-        }
-
         public int getHealingPoints() {
             return healingPoints;
         }
-
-        public void setHealingPoints(int healingPoints) {
-            this.healingPoints = healingPoints;
-        }
-
-
-
     }
 
-    public class Munition{
+    public static class Munition extends Item {
         private String name;
         private String description;
         private int quantity;
@@ -58,42 +37,22 @@ public class Item {
             return name;
         }
 
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getDescription() {
-            return description;
-        }
-
-        public void setDescription(String description) {
-            this.description = description;
-        }
-
         public int getQuantity() {
             return quantity;
         }
+    }
 
-        public void setQuantity(int quantity) {
-            this.quantity = quantity;
+    public static class KeyItem extends Item {
+        private String keyName;
+        private String description;
+
+        public KeyItem(String keyName, String description) {
+            this.keyName = keyName;
+            this.description = description;
         }
 
-
-
+        public String getKeyName() {
+            return keyName;
+        }
     }
-
-/*
-    public void Items{
-        Munition pistolMunition = new Munition("9mm", "pistol munition", 10);
-        Munition shotgunMunition = new Munition("shotgun shells", "Shotgun Munition, really powerful", 5);
-
-        HealingItem greenHerb = new HealingItem("It can help you with the pain and the infection",25, "Green Herb");
-        HealingItem redHerb = new HealingItem("Not as powerful as a green herb", 4, "Red Herb");
-        HealingItem mixHerb = new HealingItem("Restore your full healt, it can be obtain mixing a red a green herb", 100, "Mixed Herb");
-
-    }
-*/
-
-
-
 }

@@ -1,18 +1,27 @@
 package map;
 
-import java.time.Year;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import characters.Npc;
+import characters.Enemy.Zombie;
+import combat.Item;
 
 public class Places {
 
     public static class Room {
         private String name;
         private String description;
+        private List<Item> itemsInRoom;
+        private List<Zombie> enemiesInRoom;
+        private Npc npc;
 
         public Room(String name, String description) {
             this.name = name;
             this.description = description;
+            this.itemsInRoom = new ArrayList<>();
+            this.enemiesInRoom = new ArrayList<>();
         }
 
         public String getName() {
@@ -21,6 +30,22 @@ public class Places {
 
         public String getDescription() {
             return description;
+        }
+
+        public List<Item> getItemsInRoom() {
+            return itemsInRoom;
+        }
+
+        public List<Zombie> getEnemiesInRoom() {
+            return enemiesInRoom;
+        }
+
+        public Npc getNpc() {
+            return npc;
+        }
+
+        public void setNpc(Npc npc) {
+            this.npc = npc;
         }
 
         @Override
@@ -35,15 +60,14 @@ public class Places {
         private String placeInformation;
         private Map<String, Place> exits;
         private Map<String, Room> rooms;
-        private boolean playerWasHere;
-        private Room currentRoom; // Track the player's current room
-
+        private boolean locked;
+        private String requiredKeyName;
+        private Room currentRoom;
 
         public Place(String placeName, String description, String placeInformation) {
             this.placeName = placeName;
             this.description = description;
             this.placeInformation = placeInformation;
-            this.playerWasHere = false;
             this.exits = new HashMap<>();
             this.rooms = new HashMap<>();
         }
@@ -52,45 +76,16 @@ public class Places {
             return placeName;
         }
 
-        public void setPlaceName(String placeName) {
-            this.placeName = placeName;
-        }
-
         public String getDescription() {
             return description;
-        }
-
-        public void setDescription(String description) {
-            this.description = description;
         }
 
         public String getPlaceInformation() {
             return placeInformation;
         }
 
-        public void setPlaceInformation(String placeInformation) {
-            this.placeInformation = placeInformation;
-        }
-
-        public boolean isPlayerWasHere() {
-            return playerWasHere;
-        }
-
-        public void setPlayerWasHere(boolean playerWasHere) {
-            this.playerWasHere = playerWasHere;
-        }
-
         public Map<String, Place> getExits() {
             return exits;
-        }
-
-        public void connectPlaces(String direction, Place destination, String requiredRoom) {
-            exits.put(direction, destination);
-            rooms.put(direction, new Room(requiredRoom, "Exit to " + destination.getPlaceName()));
-        }
-
-        public void addRoom(String name, String description) {
-            rooms.put(name, new Room(name, description));
         }
 
         public Map<String, Room> getRooms() {
@@ -103,6 +98,31 @@ public class Places {
 
         public void setCurrentRoom(Room currentRoom) {
             this.currentRoom = currentRoom;
+        }
+
+        public boolean isLocked() {
+            return locked;
+        }
+
+        public void setLocked(boolean locked) {
+            this.locked = locked;
+        }
+
+        public String getRequiredKeyName() {
+            return requiredKeyName;
+        }
+
+        public void setRequiredKeyName(String requiredKeyName) {
+            this.requiredKeyName = requiredKeyName;
+        }
+
+        public void connectPlaces(String direction, Place destination, String roomName) {
+            exits.put(direction, destination);
+            rooms.put(direction, new Room(roomName, "Exit to " + destination.getPlaceName()));
+        }
+
+        public void addRoom(String name, String description) {
+            rooms.put(name, new Room(name, description));
         }
 
         @Override
@@ -119,85 +139,73 @@ public class Places {
         }
     }
 
-
     public Place createWorld() {
-        Place house = new Place("House", "You are in the house. You can go out to the garden.",
-                                "You are inside the House, there are a Living room, a Kitchen and a Sleeping room ... " +
-                                "I should take a look around in case I could find something useful");
-        house.addRoom("living room", "A cozy place with a sofa and TV. I heard somebody hits door. " +
-                        "My Spider-sense tells me that it could be dangerous to open it disarmed");
-        house.addRoom("kitchen", "A place with a fridge and a table. I should check if I can find something useful here");
-        house.addRoom("sleeping room", "A quiet room with a bed. I should check if I can find something useful here");
+        Place house = new Place("House", "A small house with a garden exit", "Living room, kitchen, sleeping room");
+        house.addRoom("living room", "A simple living room with a window");
+        house.addRoom("kitchen", "A kitchen with a small table");
+        house.addRoom("sleeping room", "A bedroom with a large bed");
 
-        Place garden = new Place("Garden", "You are in the garden. You can go to the house or the street.",
-                                "Nothing useful around, just a dead body, it looks kinda like Stanley Uris(The owner from the hotel)," +
-                                "... he got cuts in both wrists, I assume he commits suicide. Fuck ... I better keep going");
+        Place garden = new Place("Garden", "A quiet garden", "");
+        Place street = new Place("Street", "A main street with smoke in the distance", "");
+        Place billsHouse = new Place("Bill's House", "A locked house that belongs to Bill", "");
+        billsHouse.setLocked(true);
+        billsHouse.setRequiredKeyName("Key to Bill's House");
+        billsHouse.addRoom("living room", "Bill's living room");
+        billsHouse.addRoom("kitchen", "Bill's kitchen");
+        billsHouse.addRoom("bedroom", "Bill's bedroom");
 
-        Place street = new Place("Street", "You are on the Maple street. There is a crashed truck blocking the way ahead. " +
-                                "You can go to the garden, the pub, or Bill's house.",
-                                "The fire seems pretty intense I cant go closer to it. Bill should be at the bar" +
-                                "I should Speak with him");
+        Place pub = new Place("Pub", "A local pub that might have supplies", "");
+        pub.addRoom("main room", "A large room with tables and chairs");
+        pub.addRoom("bar counter", "A counter where the bartender stands");
+        pub.addRoom("toilets", "Dimly lit toilets");
 
-        Place billsHouse = new Place("Bill's House", "You are in Bill's house. You can go to Maple Street.", "");
-        billsHouse.addRoom("living room", "A cozy place with a sofa and TV.");
-        billsHouse.addRoom("Kitchen", "A place with a fridge and a table. I should check if I can find something useful here");
-        billsHouse.addRoom("Bill Sleeping room", "A quiet room with a bed. I should check if I can find something useful here");
+        Place alley = new Place("Alley", "A small alley leading to another street", "");
+        alley.setLocked(true);
+        alley.setRequiredKeyName("Key to Alley");
+        alley.addRoom("alley entrance", "A narrow entrance");
+        alley.addRoom("alley end", "A dead end with garbage");
 
-        Place pub = new Place("Pub", "You are in the pub. You can go to the little alley or Maple Street.", "");
-        pub.addRoom("main room", " ");//TODO description writing
-        pub.addRoom("back of the bar counter", " ");
-        pub.addRoom("Toilets", " ");
+        Place policeStation = new Place("Police Station", "A station that might have weapons", "");
+        policeStation.setLocked(true);
+        policeStation.setRequiredKeyName("Key to Police Station");
+        policeStation.addRoom("entrance", "The station entrance");
+        policeStation.addRoom("office", "An office with papers everywhere");
+        policeStation.addRoom("armory", "An armory that might contain weapons");
 
-        Place alley = new Place("Little Alley", "You are in the alley. You can go to the pub or Maple Street.", "");
-        pub.addRoom("alley back side", " ");
-        pub.addRoom("alley side", " ");
-
-        Place street2 = new Place("Street", "You are in the other side of Maple Street, you can go to " +
-                                            "Stanley´s Motel, to Ben Hanscom House or to the Police Station. the end of the road is block with a barricade" +
-                                            "I don´t think that I can go further", "");
-
-        //define what is inside the police station
-        Place policeStation = new Place("Police Station", "You are in the Police Station ...", " ");
-        policeStation.addRoom("entrance"," ");
-        policeStation.addRoom("office"," ");//TODO add a Master key
-        policeStation.addRoom("armory"," ");
-        policeStation.addRoom("cells"," ");//TODO Add the rope function
-
-        Place motel = new Place ("motel", "You are in Stanley´s Motel, you can go to the Street or to the ", " ");
-        motel.addRoom("Lobby", "");
-        motel.addRoom("room 1", "");
-        motel.addRoom("room 2", "");
-        motel.addRoom("room 3", "");
-        motel.addRoom("room 3", "");
-        motel.addRoom("room 3", "");
-
-
-        house.connectPlaces("garden", garden, "Living room");
+        house.connectPlaces("garden", garden, "living room");
         garden.connectPlaces("house", house, "garden");
-
         garden.connectPlaces("street", street, "garden");
         street.connectPlaces("garden", garden, "street");
-
         street.connectPlaces("pub", pub, "street");
         pub.connectPlaces("street", street, "pub");
-
         street.connectPlaces("bills house", billsHouse, "street");
-        billsHouse.connectPlaces("street", street, "bills House");
-
-        pub.connectPlaces("alley", alley, "pub");
+        billsHouse.connectPlaces("street", street, "bills house");
+        pub.connectPlaces("bar alley", alley, "bar counter");
         alley.connectPlaces("pub", pub, "alley");
+        alley.connectPlaces("police station", policeStation, "alley end");
+        policeStation.connectPlaces("alley", alley, "police station");
 
-        alley.connectPlaces("street", street2, "alley");
-        street2.connectPlaces("alley", alley, "street");
+        house.setCurrentRoom(house.getRooms().get("living room"));
 
-        street2.connectPlaces("police station", policeStation, "street");
-        policeStation.connectPlaces("street", street2, "police station");
+        house.getRooms().get("kitchen").getItemsInRoom().add(new Item.Munition("9mm", "Pistol munition", 10));
+        house.getRooms().get("sleeping room").getItemsInRoom().add(new Item.HealingItem("Small med", 20, "Green Herb"));
 
-        street2.connectPlaces("motel", motel, "street");
-        motel.connectPlaces("street", street2, "motel");
+        pub.getRooms().get("bar counter").setNpc(new characters.Npc(
+                "Bill",
+                "Hello friend, the situation is pretty fucked up, one of those bastard bite me. I couldnt get away 'couse the *Alley* door is locked. I let the Key at home.",
+                new Item.KeyItem("Key to Bill's House", "Opens Bill's House")
+        ));
 
+        billsHouse.getRooms().get("bedroom").getItemsInRoom().add(new Item.KeyItem("Key to Alley", "Opens the Alley"));
+        policeStation.getRooms().get("entrance").getEnemiesInRoom().add(
+                new characters.Enemy.Zombie("Cop Zombie", "A zombie in uniform", 100, 10)
+        );
+        policeStation.getRooms().get("office").getItemsInRoom().add(new Item.KeyItem("Key to Police Station", "I could maybe find something useful in the police station"));
+
+        house.getRooms().get("living room").getEnemiesInRoom().add(
+                new characters.Enemy.Zombie("Infected Man", "He tries to break the window!", 100, 10)
+        );
 
         return house;
-        }
-
+    }
 }
