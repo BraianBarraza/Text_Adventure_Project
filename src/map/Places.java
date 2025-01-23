@@ -144,7 +144,7 @@ public class Places {
         billsHouse.addRoom("Bill Sleeping room", "A quiet room with a bed. I should check if I can find something useful here");
 
         Place pub = new Place("Pub", "You are in the pub. You can go to the little alley or Maple Street.", "");
-        pub.addRoom("main room", " ");
+        pub.addRoom("main room", " ");//TODO description writing
         pub.addRoom("back of the bar counter", " ");
         pub.addRoom("Toilets", " ");
 
@@ -159,9 +159,9 @@ public class Places {
         //define what is inside the police station
         Place policeStation = new Place("Police Station", "You are in the Police Station ...", " ");
         policeStation.addRoom("entrance"," ");
-        policeStation.addRoom("office"," ");//Master key
+        policeStation.addRoom("office"," ");//TODO add a Master key
         policeStation.addRoom("armory"," ");
-        policeStation.addRoom("cells"," ");//Add the rope function
+        policeStation.addRoom("cells"," ");//TODO Add the rope function
 
         Place motel = new Place ("motel", "You are in Stanley´s Motel, you can go to the Street or to the ", " ");
         motel.addRoom("Lobby", "");
@@ -169,7 +169,7 @@ public class Places {
         motel.addRoom("room 2", "");
         motel.addRoom("room 3", "");
         motel.addRoom("room 3", "");
-    motel.addRoom("room 3", "");
+        motel.addRoom("room 3", "");
 
 
         house.connectPlaces("garden", garden, "Living room");
