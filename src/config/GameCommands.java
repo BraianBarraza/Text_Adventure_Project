@@ -8,7 +8,10 @@ import combat.Item;
 public class GameCommands {
 
     public static Place move(Place currentPlace, Player player) {
-        System.out.println("Type: 'room <roomName>' or 'exit <place>'");
+        System.out.println("to move around type: 'room <roomName>' or 'exit <place>'");
+        System.out.println("you are at the: " + currentPlace.getPlaceName());
+        System.out.println("actual Rooms: " + currentPlace.getRooms());
+        System.out.println("Possible exits: " + currentPlace.getExits());
         String command = new java.util.Scanner(System.in).nextLine().toLowerCase();
         if (command.startsWith("room ")) {
             String roomName = command.substring(5).trim();

@@ -82,15 +82,15 @@ public class Game {
             System.out.println("4. Inventory");
             System.out.println("5. Pause Menu");
             String input = sc.nextLine();
-            if (input.equals("1")) {
+            if (input.equals("1")|| input.equalsIgnoreCase("move")) {
                 currentPlace = GameCommands.move(currentPlace, player);
-            } else if (input.equals("2")) {
+            } else if (input.equals("2")||input.equalsIgnoreCase("search")) {
                 searchRoom();
-            } else if (input.equals("3")) {
+            } else if (input.equals("3")||input.equalsIgnoreCase("status")) {
                 showPlayerStatus();
-            } else if (input.equals("4")) {
+            } else if (input.equals("4")||input.equalsIgnoreCase("inventory")) {
                 inventoryMenu();
-            } else if (input.equals("5")) {
+            } else if (input.equals("5")||input.equalsIgnoreCase("pause")) {
                 inGame = false;
             } else {
                 System.out.println("Invalid option");

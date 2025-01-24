@@ -145,27 +145,27 @@ public class Places {
         house.addRoom("kitchen", "A kitchen with a small table");
         house.addRoom("sleeping room", "A bedroom with a large bed");
 
-        Place garden = new Place("Garden", "A quiet garden", "");
-        Place street = new Place("Street", "A main street with smoke in the distance", "");
-        Place billsHouse = new Place("Bill's House", "A locked house that belongs to Bill", "");
+        Place garden = new Place("Garden", "A quiet garden", "");//TODO define description plus corpse testings
+        Place street = new Place("Street", "A main street with smoke in the distance", "");//TODO define description plus sections
+        Place billsHouse = new Place("Bill's House", "A locked house that belongs to Bill", "");//TODO define description, plus escape rope
         billsHouse.setLocked(true);
         billsHouse.setRequiredKeyName("Key to Bill's House");
         billsHouse.addRoom("living room", "Bill's living room");
         billsHouse.addRoom("kitchen", "Bill's kitchen");
         billsHouse.addRoom("bedroom", "Bill's bedroom");
 
-        Place pub = new Place("Pub", "A local pub that might have supplies", "");
+        Place pub = new Place("Pub", "A local pub that might have supplies", "");//TODO define description
         pub.addRoom("main room", "A large room with tables and chairs");
         pub.addRoom("bar counter", "A counter where the bartender stands");
         pub.addRoom("toilets", "Dimly lit toilets");
 
-        Place alley = new Place("Alley", "A small alley leading to another street", "");
+        Place alley = new Place("Alley", "A small alley leading to another street", "");//TODO define description
         alley.setLocked(true);
         alley.setRequiredKeyName("Key to Alley");
         alley.addRoom("alley entrance", "A narrow entrance");
         alley.addRoom("alley end", "A dead end with garbage");
 
-        Place policeStation = new Place("Police Station", "A station that might have weapons", "");
+        Place policeStation = new Place("Police Station", "A station that might have weapons", "");//TODO define description
         policeStation.setLocked(true);
         policeStation.setRequiredKeyName("Key to Police Station");
         policeStation.addRoom("entrance", "The station entrance");
