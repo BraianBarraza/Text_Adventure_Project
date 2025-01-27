@@ -2,8 +2,7 @@ package config;
 
 import characters.Npc;
 import map.Places;
-import map.Places.Place;
-import map.Places.Room;
+import map.Places.*;
 import characters.Player;
 import characters.Enemy.Zombie;
 import characters.Npc;

@@ -1,8 +1,5 @@
 package characters;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class EnemiesFactory {
         Enemy.Zombie zombie = new Enemy.Zombie("Zombie", "It is another infected person, it moves slow", 100, 10);
         Enemy.Zombie infectedDog = new Enemy.Zombie("Infected Dog", "It is an infected Dog! It moves quickly, I can´t run away from it!", 50, 5);
