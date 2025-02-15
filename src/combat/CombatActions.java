@@ -14,33 +14,57 @@ public class CombatActions {
         }
     }
 
-    public void playerAttack(Player player, Zombie zombie) {
+    public void playerAttack(Player player, Zombie zombie, Weapon weapon) {
         if (zombie.getHp() <= 0) {
             System.out.println("That zombie is already dead.");
             return;
         }
-        int baseDamage = player.currentDamage();
-        if (player.getCurrentWeapon().getName().equalsIgnoreCase("Pistol")
-                || player.getCurrentWeapon().getName().equalsIgnoreCase("Shotgun")) {
-            Random r = new Random();
-            int roll = r.nextInt(100);
-            if (roll < 33) {
-                int dmg = baseDamage + 70;
-                zombie.setHp(zombie.getHp() - dmg);
-                System.out.println("Headshot! +" + 70 + " damage. Zombie HP: " + zombie.getHp());
-            } else if (roll < 66) {
-                int dmg = baseDamage + 35;
-                zombie.setHp(zombie.getHp() - dmg);
-                System.out.println("Chest shot! +" + 35 + " damage. Zombie HP: " + zombie.getHp());
-            } else {
-                int dmg = baseDamage + 10;
-                zombie.setHp(zombie.getHp() - dmg);
-                System.out.println("Leg shot! +" + 10 + " damage. Zombie HP: " + zombie.getHp());
+
+        if (weapon.getName().equalsIgnoreCase("Pistol")) {
+            if (!player.hasAmmo("9mm")) {
+                System.out.println("No 9mm ammo left. You cannot shoot.");
+                return;
             }
+            player.consumeAmmo("9mm");
+            applyRandomShot(zombie, weapon);
+        } else if (weapon.getName().equalsIgnoreCase("Shotgun")) {
+            if (!player.hasAmmo("70mm shells")) {
+                System.out.println("No 70mm shells left. You cannot shoot.");
+                return;
+            }
+            player.consumeAmmo("70mm shells");
+            applyRandomShot(zombie, weapon);
         } else {
-            int newHp = zombie.getHp() - baseDamage;
+            // Melee weapon or fists; just apply base damage
+            int newHp = zombie.getHp() - weapon.getDamage();
             zombie.setHp(newHp);
-            System.out.println("You strike the zombie. Zombie HP: " + zombie.getHp());
+            System.out.println("You hit the zombie with " + weapon.getName() + " for "
+                    + weapon.getDamage() + " damage. Zombie HP: " + zombie.getHp());
         }
+    }
+
+    private void applyRandomShot(Zombie zombie, Weapon weapon) {
+        Random r = new Random();
+        int roll = r.nextInt(3); // 0: head, 1: chest, 2: legs
+        int damage;
+        String shotType;
+        switch (roll) {
+            case 0:
+                damage = 100;
+                shotType = "HEADSHOT!";
+                break;
+            case 1:
+                damage = 70;
+                shotType = "Chest shot";
+                break;
+            default:
+                damage = 34;
+                shotType = "Leg shot";
+                break;
+        }
+        int newHp = zombie.getHp() - damage;
+        zombie.setHp(newHp);
+        System.out.println(shotType + " with " + weapon.getName() + " for "
+                + damage + " damage. Zombie HP: " + zombie.getHp());
     }
 }

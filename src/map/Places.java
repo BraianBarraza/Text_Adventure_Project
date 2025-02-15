@@ -9,6 +9,7 @@ import characters.Enemy;
 import characters.Npc;
 import characters.Enemy.Zombie;
 import combat.Item;
+import combat.WeaponFactory;
 
 public class Places {
 
@@ -159,7 +160,7 @@ public class Places {
         Place billsHouse = new Place("Bill's House", "A locked house that belongs to Bill", "");//TODO define description, plus escape rope
         billsHouse.setLocked(true);
         billsHouse.setRequiredKeyName("Key to Bill's House");
-        billsHouse.addRoom("living room", "Bill's living room");
+        billsHouse.addRoom("living room", "Bill's living room");//TODO
         billsHouse.addRoom("kitchen", "Bill's kitchen");
         billsHouse.addRoom("bedroom", "Bill's bedroom");
 
@@ -196,7 +197,9 @@ public class Places {
 
         house.setCurrentRoom(house.getRooms().get("living room"));
 
-        house.getRooms().get("kitchen").getItemsInRoom().add(new Item.Munition("9mm", "Pistol munition", 10));
+        house.getRooms().get("kitchen").getItemsInRoom().add(new Item.Munition("9mm", 25, "9mm munition"));
+        house.getRooms().get("kitchen").getItemsInRoom().add(WeaponFactory.PISTOL);
+        house.getRooms().get("kitchen").getItemsInRoom().add(new Item.Munition("9mm", 25, "9mm munition"));
         house.getRooms().get("sleeping room").getItemsInRoom().add(new Item.HealingItem("Small med", 20, "Green Herb"));
 
         garden.getRooms().get("side garden").getEnemiesInRoom().add(

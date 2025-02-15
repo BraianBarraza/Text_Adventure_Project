@@ -1,58 +1,61 @@
 package combat;
 
 public class Item {
-
     public static class HealingItem extends Item {
-        private String name;
-        private String description;
         private int healingPoints;
+        private String name;
 
-        public HealingItem(String description, int healingPoints, String name) {
+        public HealingItem(String name, int healingPoints, String description) {
+            super(description);
             this.name = name;
-            this.description = description;
             this.healingPoints = healingPoints;
         }
-
-        public String getName() {
-            return name;
-        }
-
         public int getHealingPoints() {
             return healingPoints;
+        }
+        public String getName() {
+            return name;
         }
     }
 
     public static class Munition extends Item {
         private String name;
-        private String description;
         private int quantity;
 
-        public Munition(String name, String description, int quantity) {
+        public Munition(String name, int quantity, String description) {
+            super(description);
             this.name = name;
-            this.description = description;
             this.quantity = quantity;
         }
-
         public String getName() {
             return name;
         }
-
         public int getQuantity() {
             return quantity;
+        }
+        public void setQuantity(int quantity) {
+            this.quantity = quantity;
         }
     }
 
     public static class KeyItem extends Item {
-        private String keyName;
-        private String description;
+        private String name;
 
-        public KeyItem(String keyName, String description) {
-            this.keyName = keyName;
-            this.description = description;
+        public KeyItem(String name, String description) {
+            super(description);
+            this.name = name;
         }
+        public String getName() {
+            return name;
+        }
+    }
 
-        public String getKeyName() {
-            return keyName;
-        }
+    private String description;
+
+    public Item(String description) {
+        this.description = description;
+    }
+    public String getDescription() {
+        return description;
     }
 }

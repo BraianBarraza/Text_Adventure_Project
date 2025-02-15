@@ -42,7 +42,7 @@ public class GameCommands {
                 if (next.isLocked()) {
                     boolean hasKey = false;
                     for (Item.KeyItem k : player.getInventoryKeys()) {
-                        if (k.getKeyName().equalsIgnoreCase(next.getRequiredKeyName())) {
+                        if (k.getName().equalsIgnoreCase(next.getRequiredKeyName())) {
                             hasKey = true;
                             break;
                         }

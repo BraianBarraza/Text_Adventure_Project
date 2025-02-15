@@ -1,12 +1,15 @@
 package combat;
 
-public class Weapon {
+public class Weapon extends Item {
     private String name;
     private int damage;
+    private String description;
 
-    public Weapon(String name, int damage) {
+    public Weapon(String name, int damage, String description) {
+        super("Weapon");
         this.name = name;
         this.damage = damage;
+        this.description = description;
     }
 
     public String getName() {
@@ -17,7 +20,7 @@ public class Weapon {
         return damage;
     }
 
-    public String toString() {
-        return name + " (Damage: " + damage + ")";
+    public String getDescription() {
+        return description;
     }
 }

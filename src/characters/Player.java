@@ -1,6 +1,9 @@
 package characters;
 
 import combat.Item;
+import combat.Item.HealingItem;
+import combat.Item.Munition;
+import combat.Item.KeyItem;
 import combat.Weapon;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,11 +12,9 @@ public class Player {
     private String name;
     private int hp;
     private List<Weapon> inventoryWeapons;
-    private List<Item.HealingItem> inventoryHealingItems;
-    private List<Item.Munition> inventoryMunition;
-    private List<Item.KeyItem> inventoryKeys;
-    private Weapon currentWeapon;
-    private Weapon fist;
+    private List<HealingItem> inventoryHealingItems;
+    private List<Munition> inventoryMunition;
+    private List<KeyItem> inventoryKeys;
 
     public Player(String name, int hp) {
         this.name = name;
@@ -22,7 +23,6 @@ public class Player {
         this.inventoryHealingItems = new ArrayList<>();
         this.inventoryMunition = new ArrayList<>();
         this.inventoryKeys = new ArrayList<>();
-        this.fist = new Weapon("Fists", 10);
     }
 
     public String getName() {
@@ -37,71 +37,76 @@ public class Player {
         this.hp = hp;
     }
 
-    public Weapon getCurrentWeapon() {
-        return currentWeapon != null ? currentWeapon : fist;
-    }
-
-    public void setCurrentWeapon(Weapon weapon) {
-        this.currentWeapon = weapon;
-        System.out.println("You equipped " + weapon.getName());
+    public void addWeaponToInventory(Weapon weapon) {
+        inventoryWeapons.add(weapon);
     }
 
     public List<Weapon> getInventoryWeapons() {
         return inventoryWeapons;
     }
 
-    public List<Item.HealingItem> getInventoryHealingItems() {
+    public void addHealingItem(HealingItem item) {
+        inventoryHealingItems.add(item);
+    }
+
+    public List<HealingItem> getInventoryHealingItems() {
         return inventoryHealingItems;
     }
 
-    public List<Item.Munition> getInventoryMunition() {
+    public void addMunition(Munition munition) {
+        inventoryMunition.add(munition);
+    }
+
+    public List<Munition> getInventoryMunition() {
         return inventoryMunition;
     }
 
-    public List<Item.KeyItem> getInventoryKeys() {
+    public void addKeyItem(KeyItem key) {
+        inventoryKeys.add(key);
+    }
+
+    public List<KeyItem> getInventoryKeys() {
         return inventoryKeys;
-    }
-
-    public void addWeaponToInventory(Weapon weapon) {
-        inventoryWeapons.add(weapon);
-        System.out.println(weapon.getName() + " added to inventory");
-    }
-
-    public void addHealingItem(Item.HealingItem item) {
-        inventoryHealingItems.add(item);
-        System.out.println(item.getName() + " added to inventory");
-    }
-
-    public void addMunition(Item.Munition m) {
-        inventoryMunition.add(m);
-        System.out.println(m.getName() + " added to inventory");
-    }
-
-    public void addKeyItem(Item.KeyItem k) {
-        inventoryKeys.add(k);
-        System.out.println(k.getKeyName() + " key added to inventory");
     }
 
     public void showInventory() {
         System.out.println("Weapons:");
         for (Weapon w : inventoryWeapons) {
-            System.out.println("- " + w);
+            System.out.println(" - " + w.getName() + " (DMG: " + w.getDamage() + ")");
+        }
+        System.out.println("Ammunition:");
+        for (Munition m : inventoryMunition) {
+            System.out.println(" - " + m.getName() + " (Quantity: " + m.getQuantity() + ")");
         }
         System.out.println("Healing Items:");
-        for (Item.HealingItem h : inventoryHealingItems) {
-            System.out.println("- " + h.getName() + " (" + h.getHealingPoints() + ")");
+        for (HealingItem h : inventoryHealingItems) {
+            System.out.println(" - " + h.getName() + " (Heal: " + h.getHealingPoints() + ")");
         }
-        System.out.println("Keys:");
-        for (Item.KeyItem k : inventoryKeys) {
-            System.out.println("- " + k.getKeyName());
-        }
-        System.out.println("Munition:");
-        for (Item.Munition mm : inventoryMunition) {
-            System.out.println("- " + mm.getName() + " x" + mm.getQuantity());
+        System.out.println("Key Items:");
+        for (KeyItem k : inventoryKeys) {
+            System.out.println(" - " + k.getName());
         }
     }
 
-    public int currentDamage() {
-        return getCurrentWeapon().getDamage();
+    public boolean hasAmmo(String ammoName) {
+        for (Munition m : inventoryMunition) {
+            if (m.getName().equalsIgnoreCase(ammoName) && m.getQuantity() > 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void consumeAmmo(String ammoName) {
+        for (int i = 0; i < inventoryMunition.size(); i++) {
+            Munition m = inventoryMunition.get(i);
+            if (m.getName().equalsIgnoreCase(ammoName) && m.getQuantity() > 0) {
+                m.setQuantity(m.getQuantity() - 1);
+                if (m.getQuantity() <= 0) {
+                    inventoryMunition.remove(i);
+                }
+                return;
+            }
+        }
     }
 }
