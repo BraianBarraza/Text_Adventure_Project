@@ -12,16 +12,17 @@ public class GameStory {
         System.out.println("tomorrow's estimated sunrise time: 04:49:28 Q (UTC-4)");
         System.out.println(" ");
         System.out.println("It's been 5 long years since that terrible day.");
-        System.out.println("Sometimes I look at my shoes, and I can see that blood stain on my boot.");
+        System.out.println("Sometimes when I look down, I still see that blood stain on my boot.");
         System.out.println("if I would have stopped them, if only I would have said something");
         System.out.println("but I did nothing, that's why I swore never to hold a gun again... ");
         System.out.println(" ");
-        System.out.println("but now I have to do it again. But this time it will be different.");
-        System.out.println("Because they are ... they are already death");
+        System.out.println("but now I have to do it. But this time it is different.");
+        System.out.println("'cause they are ... they are already death");
         System.out.println(" ");
         System.out.println("I should watch the news and check if theres some new information about them");
         System.out.println(" ");
-
+        System.out.println("Tutorial: use \"2. Search\" to discover what a room or a place contains, but be careful \n" +
+                ",you can also find some unpleasantry surprises. \n");
     }
 
     public static void tvNews(){

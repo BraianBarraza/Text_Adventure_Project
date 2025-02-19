@@ -5,22 +5,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import characters.Enemy;
 import characters.Npc;
 import characters.Enemy.Zombie;
 import combat.Item;
 
 
+import static characters.EnemiesFactory.*;
+import static characters.NpcFactory.*;
 import static combat.ItemsFactory.*;
 import static combat.WeaponFactory.*;
 
-/**
- *
- */
+
 public enum Places {
 
-    HOUSE("House", "A small house with a garden exit", "Living room, kitchen, sleeping room", false, null),
-    GARDEN("Garden", "A quiet garden", "", false, null),
+    HOUSE("House", "A small house with a garden exit", "I can watch the News in the Living room, " +
+            "and look if I find something useful in the kitchen or in the sleeping room", false, null),
+    GARAGE("Garage", "My bike is here it is a shame that a I cannot use it to escape from here","Good that I had some munition here", false, null),
+    GARDEN("Garden", "A quiet garden", "Front garden, side garden", false, null),
     STREET("Street", "A main street with smoke in the distance", "", false, null),
     BILLS_HOUSE("Bill's House", "A locked house that belongs to Bill", "", true, "Key to Bill's House"),
     PUB("Pub", "A local pub that might have supplies", "", false, null),
@@ -49,13 +50,18 @@ public enum Places {
 
     static {
         // HOUSE
-        HOUSE.addRoom("living room", "A simple living room with a window");
-        HOUSE.addRoom("kitchen", "A kitchen with a small table");
-        HOUSE.addRoom("sleeping room", "A bedroom with a large bed");
+        HOUSE.addRoom("living room", "A simple living room, theres a TV and a couch, and the exit to the front garden");
+        HOUSE.addRoom("kitchen", "I can hear somebody in the side garden, I cant see it but I know is there.\n" +
+                "I think is one of them, I should check if the old Bill is ok, he should be at the PUB");
+        HOUSE.addRoom("sleeping room", "My bedroom, good thing that I save my old weapon here \n" +
+                "I should look for the munition that I left in the GARAGE");
 
         // GARDEN
         GARDEN.addRoom("side garden", "");
         GARDEN.addRoom("front garden", "");
+
+        //GARAGE
+        GARAGE.addRoom("garage","");
 
         // STREET
         STREET.addRoom("block 1", "");
@@ -80,8 +86,12 @@ public enum Places {
         POLICE_STATION.addRoom("office", "An office with papers everywhere");
         POLICE_STATION.addRoom("armory", "An armory that might contain weapons");
 
+        //Places Connection
         HOUSE.connectPlaces("garden", GARDEN, "living room");
         GARDEN.connectPlaces("house", HOUSE, "front garden");
+
+        GARDEN.connectPlaces("garage", GARAGE, "garage");
+        GARAGE.connectPlaces("garden", GARDEN, "side garden");
 
         GARDEN.connectPlaces("street", STREET, "front garden");
         STREET.connectPlaces("garden", GARDEN, "block 1");
@@ -107,51 +117,35 @@ public enum Places {
         POLICE_STATION.setCurrentRoom(POLICE_STATION.getRooms().get("entrance"));
 
 
-        // HOUSE
-        HOUSE.getRooms().get("kitchen").getItemsInRoom().add(PISTOLMUNITIONBOX);
-        HOUSE.getRooms().get("kitchen").getItemsInRoom().add(PISTOL);
+        //Setting ITEMS
+        HOUSE.getRooms().get("kitchen").getItemsInRoom().add(PISTOL_MUNITION_BOX);
         HOUSE.getRooms().get("kitchen").getItemsInRoom().add(KNIFE);
-        HOUSE.getRooms().get("sleeping room").getItemsInRoom().add(GREENHERB);
+        HOUSE.getRooms().get("sleeping room").getItemsInRoom().add(PISTOL);
+        HOUSE.getRooms().get("sleeping room").getItemsInRoom().add(GREEN_HERB);
 
-        // GARDEN
-        GARDEN.getRooms().get("side garden").getEnemiesInRoom().add(
-                new Enemy.Zombie("Zombie", "It is another infected person, it moves slow", 100, 10)
-        );
+        GARAGE.getRooms().get("garage").getItemsInRoom().add(PISTOL_MUNITION_BOX);
+        GARAGE.getRooms().get("garage").getItemsInRoom().add(RED_HERB);
 
-        // PUB (bar counter)
-        Npc npcBill = new Npc(
-                "Bill",
-                "Hello friend, the situation is pretty fucked up, one of those bastard bite me. I couldn´t get away "
-                        + "'cause the *Alley* door is locked. I left the Alley Key at home. "
-                        + "So go to *My House* and look for the *alleys key*. You may find some help. "
-                        + "The police assistance was here too, probably he already found it.",
-                new Item.KeyItem("Key to Bill's House", "Opens Bill's House")
-        );
-        PUB.getRooms().get("bar counter").setNpc(npcBill);
+        BILLS_HOUSE.getRooms().get("bedroom").getItemsInRoom().add(BILLS_KEY);
 
-        // BILL'S HOUSE
-        BILLS_HOUSE.getRooms().get("living room").getEnemiesInRoom().add(
-                new Zombie("Cop Zombie", "Fuck! the Sheriff assistant was bitten ! he still has his helmet, this will be dangerous", 100, 10)
-        );
-        BILLS_HOUSE.getRooms().get("bedroom").getItemsInRoom().add(new Item.KeyItem("Key to Alley", "Opens the Alley"));
 
-        // POLICE STATION
-        POLICE_STATION.getRooms().get("entrance").getEnemiesInRoom().add(
-                new Zombie("Cop Zombie", "A zombie in uniform", 100, 10)
-        );
-        POLICE_STATION.getRooms().get("office").getItemsInRoom().add(
-                new Item.KeyItem("Key to Police Station", "I could maybe find something useful in the police station")
-        );
+        //Setting ENEMIES
+        GARDEN.getRooms().get("side garden").getEnemiesInRoom().add(ZOMBIE);
 
-        // HOUSE (living room)
-        HOUSE.getRooms().get("living room").getEnemiesInRoom().add(
-                new Zombie("Infected Man", "He tries to break the window!", 100, 10)
-        );
+        STREET.getRooms().get("block 2").getEnemiesInRoom().add(ZOMBIE);
+
+        BILLS_HOUSE.getRooms().get("living room").getEnemiesInRoom().add(POLICE);
+
+        POLICE_STATION.getRooms().get("entrance").getEnemiesInRoom().add(POLICE);
+        POLICE_STATION.getRooms().get("office").getItemsInRoom().add(STATIONS_KEY);
+
+        //Setting NPCs
+        HOUSE.getRooms().get("living room").setNpc(TV);
+        PUB.getRooms().get("bar counter").setNpc(BILL);
+
+
     }
 
-    // ======================================
-    // Métodos auxiliares para este enum
-    // ======================================
 
     public String getPlaceName() {
         return placeName;
