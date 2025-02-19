@@ -1,13 +1,20 @@
 package config;
 
-import map.Places.Place;
+import map.Places;
+import map.Places.Room;
 import characters.Player;
 import combat.Item;
+import java.util.Scanner;
+
 
 public class GameCommands {
 
-    public static Place move(Place currentPlace, Player player) {
+    public static Places move(Places currentPlace, Player player) {
         System.out.println("You are at the: " + currentPlace.getPlaceName());
+        if (currentPlace.getCurrentRoom() != null) {
+            System.out.println("Current Room: " + currentPlace.getCurrentRoom().getName());
+        }
+        System.out.println(" ");
 
         if (!currentPlace.getRooms().isEmpty()) {
             System.out.println("You can move to the following rooms: ");
@@ -25,7 +32,7 @@ public class GameCommands {
 
         System.out.println("To move, type: 'room <name of the room>' or 'exit <name of the place>'");
 
-        String command = new java.util.Scanner(System.in).nextLine().toLowerCase();
+        String command = new Scanner(System.in).nextLine().toLowerCase();
 
         if (command.startsWith("room ")) {
             String roomName = command.substring(5).trim();
@@ -38,7 +45,8 @@ public class GameCommands {
         } else if (command.startsWith("exit ")) {
             String direction = command.substring(5).trim();
             if (currentPlace.getExits().containsKey(direction)) {
-                Place next = currentPlace.getExits().get(direction);
+                Places next = currentPlace.getExits().get(direction);
+
                 if (next.isLocked()) {
                     boolean hasKey = false;
                     for (Item.KeyItem k : player.getInventoryKeys()) {
@@ -55,7 +63,6 @@ public class GameCommands {
                         next.setLocked(false);
                     }
                 }
-                next.setCurrentRoom(next.getRooms().values().iterator().next());
                 System.out.println("You move to: " + next.getPlaceName());
                 return next;
             } else {

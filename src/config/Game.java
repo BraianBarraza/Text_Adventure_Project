@@ -1,14 +1,8 @@
 package config;
 
-import characters.Npc;
-import combat.WeaponFactory;
 import map.Places;
-import map.Places.*;
+import map.Places.Room;
 import characters.Player;
-import characters.Enemy.Zombie;
-import characters.Npc;
-import combat.CombatActions;
-import combat.Weapon;
 import combat.Item;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +11,7 @@ import java.util.Scanner;
 public class Game {
     private boolean gameStarted;
     private boolean running;
-    private Place currentPlace;
+    private Places currentPlace;
     private Player player;
 
     public void startGame() {
@@ -59,12 +53,17 @@ public class Game {
     private void startNewGame() {
         gameStarted = true;
         GameStory.intro();
-        Places places = new Places();
-        currentPlace = places.createWorld();
-        System.out.println(currentPlace.getCurrentRoom());
-        player = new Player("Player", 100);
 
-        player.addWeaponToInventory(WeaponFactory.FIST);
+        // Iniciamos el juego en la HOUSE directamente (ya inicializada en el enum)
+        currentPlace = Places.HOUSE;
+
+        // Por defecto, la "currentRoom" de House se definió en el bloque estático del enum
+        System.out.println(currentPlace.getCurrentRoom());
+
+        player = new Player("Player", 100);
+        // Se agrega un arma inicial
+        player.addWeaponToInventory(combat.WeaponFactory.FIST);
+
         gameLoop();
     }
 
@@ -123,11 +122,10 @@ public class Game {
             startCombat(r.getEnemiesInRoom());
         }
         if (r.getNpc() != null) {
-            Npc npc = r.getNpc();
-            System.out.println(npc.getDialogue());
-            if (!npc.hasGivenKey() && npc.getKey() != null) {
-                player.addKeyItem((Item.KeyItem) npc.getKey());
-                npc.giveKey();
+            System.out.println(r.getNpc().getDialogue());
+            if (!r.getNpc().hasGivenKey() && r.getNpc().getKey() != null) {
+                player.addKeyItem((Item.KeyItem) r.getNpc().getKey());
+                r.getNpc().giveKey();
             }
         }
         if (!r.getItemsInRoom().isEmpty()) {
@@ -139,16 +137,16 @@ public class Game {
                     player.addMunition((Item.Munition) i);
                 } else if (i instanceof Item.KeyItem) {
                     player.addKeyItem((Item.KeyItem) i);
-                } else if (i instanceof Weapon) {
-                    player.addWeaponToInventory((Weapon) i);
+                } else if (i instanceof combat.Weapon) {
+                    player.addWeaponToInventory((combat.Weapon) i);
                 }
                 r.getItemsInRoom().remove(i);
             }
         }
     }
 
-    private void startCombat(List<Zombie> enemies) {
-        CombatActions actions = new CombatActions();
+    private void startCombat(List<characters.Enemy.Zombie> enemies) {
+        combat.CombatActions actions = new combat.CombatActions();
         Scanner sc = new Scanner(System.in);
 
         while (true) {
@@ -157,7 +155,7 @@ public class Game {
                 return;
             }
             boolean allDead = true;
-            for (Zombie z : enemies) {
+            for (characters.Enemy.Zombie z : enemies) {
                 if (z.getHp() > 0) {
                     allDead = false;
                     break;
@@ -170,7 +168,7 @@ public class Game {
 
             System.out.println("Your HP: " + player.getHp());
             int count = 1;
-            for (Zombie z : enemies) {
+            for (characters.Enemy.Zombie z : enemies) {
                 System.out.println(count + ") " + z.getName() + " (HP: " + z.getHp() + ")");
                 count++;
             }
@@ -191,14 +189,14 @@ public class Game {
                     System.out.println("Invalid choice.");
                     continue;
                 }
-                Zombie target = enemies.get(idx);
+                characters.Enemy.Zombie target = enemies.get(idx);
                 if (target.getHp() <= 0) {
                     System.out.println("That zombie is already dead.");
                     continue;
                 }
 
                 // Choose weapon
-                Weapon chosenWeapon = chooseWeapon();
+                combat.Weapon chosenWeapon = chooseWeapon();
                 if (chosenWeapon != null) {
                     actions.playerAttack(player, target, chosenWeapon);
                 }
@@ -207,7 +205,7 @@ public class Game {
             }
 
             // Zombies attack after the player's turn if they are still alive
-            for (Zombie z : enemies) {
+            for (characters.Enemy.Zombie z : enemies) {
                 if (z.getHp() > 0 && player.getHp() > 0) {
                     actions.zombieAttack(player, z);
                     if (player.getHp() <= 0) {
@@ -218,9 +216,9 @@ public class Game {
         }
     }
 
-    private Weapon chooseWeapon() {
+    private combat.Weapon chooseWeapon() {
         Scanner sc = new Scanner(System.in);
-        List<Weapon> weapons = player.getInventoryWeapons();
+        List<combat.Weapon> weapons = player.getInventoryWeapons();
         if (weapons.isEmpty()) {
             System.out.println("You have no weapons.");
             return null;
@@ -228,7 +226,7 @@ public class Game {
 
         System.out.println("Choose a weapon by number:");
         for (int i = 0; i < weapons.size(); i++) {
-            Weapon w = weapons.get(i);
+            combat.Weapon w = weapons.get(i);
             System.out.println((i + 1) + ") " + w.getName() + " (Base Damage: " + w.getDamage() + ")");
         }
 
