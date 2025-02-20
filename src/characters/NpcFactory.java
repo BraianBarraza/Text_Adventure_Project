@@ -6,16 +6,16 @@ import static combat.ItemsFactory.*;
 
 public class NpcFactory {
     public static final Npc BILL = new Npc(
-            "Bill",
-            "Hello friend, the situation is pretty fucked up, one of those bastard bite me. I couldn´t get away "
-                    + "'cause the *Alley* door is locked. I left the Alley Key at home. "
-                    + "So go to *My House* and look for the *alleys key*. You may find some help. "
-                    + "The police assistance was here too, probably he already found it." +
+            "Bill Denbrough",
+            "Hello friend, the situation is pretty fucked up, one of those bastard bite me. I couldn´t get away\n "
+                    + "'cause the *Alley* door is locked. I left the Alley Key at home\n"
+                    + "So go to *My House* and look for the *alleys key*. You may find some help.\n"
+                    + "The police assistance was here too, probably he already found it.\n" +
                     " ", BILLS_KEY
     );
 
     public static final Npc TV = new Npc(
-            "TV",
+            "the TV",
             """
                     News:
                     
@@ -35,7 +35,23 @@ public class NpcFactory {
                     We believe the virus spreads through the bodily fluids of the infected, so keep as far away from them as possible. If you are attacked by one,
                     the only way to stop them is by destroying their brain. Do not attempt to reason with them.
                     
-                    Finally, may God bless us.""", null
+                    Finally, may God bless us.
+                    ...
+                    END OF THE TRANSMISSION.
+                    
+                    Ok, thanks for the info Obama ... another black guy who do a good Job...
+                    
+                    I should go for my old gun, I think I let it in the Sleeping room.
+                    
+                    Tutorial 2: Yo can press "1. Move" to move around the map, the map is conformed by "Places" and "Rooms" every one of these
+                    has an own name, if you want to go to your living room just type "room living room", and if you want to go to another Place for example
+                    the Garden just type "exit garden" try to check every place around you may find something useful.""", null
+
+
+    );
+
+    public static final Npc COX = new Npc(
+            "Colonel James O. Cox", "", null
     );
 
 }

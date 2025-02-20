@@ -23,16 +23,17 @@ public enum Places {
     GARAGE("Garage", "My bike is here it is a shame that a I cannot use it to escape from here","Good that I had some munition here", false, null),
     GARDEN("Garden", "A quiet garden", "Front garden, side garden", false, null),
     STREET("Street", "A main street with smoke in the distance", "", false, null),
-    BILLS_HOUSE("Bill's House", "A locked house that belongs to Bill", "", true, "Key to Bill's House"),
+    BILLS_HOUSE("Bill's House", "A locked house that belongs to Bill", "", true, BILLS_KEY),
     PUB("Pub", "A local pub that might have supplies", "", false, null),
-    ALLEY("Alley", "A small alley leading to another street", "", true, "Key to Alley"),
-    POLICE_STATION("Police Station", "A station that might have some weapon", "", true, "Key to Police Station");
+    ALLEY("Alley", "A small alley leading to another street", "", true, ALLEY_KEY),
+    POLICE_STATION("Police Station", "A station that might have some weapon", "", true, STATIONS_KEY),
+    MOTEL("Motel", "The Motel from the town, I gotta see if Beverly Marsh and Carrie White are Ok ", "", false, null);
 
     private final String placeName;
     private final String description;
     private final String placeInformation;
     private boolean locked;
-    private String requiredKeyName;
+    private Item.KeyItem requiredKeyName;
 
     private final Map<String, Room> rooms = new HashMap<>();
 
@@ -40,7 +41,7 @@ public enum Places {
 
     private Room currentRoom;
 
-    Places(String placeName, String description, String placeInformation, boolean locked, String requiredKeyName) {
+    Places(String placeName, String description, String placeInformation, boolean locked, Item.KeyItem requiredKeyName) {
         this.placeName = placeName;
         this.description = description;
         this.placeInformation = placeInformation;
@@ -61,25 +62,34 @@ public enum Places {
         GARDEN.addRoom("front garden", "");
 
         //GARAGE
-        GARAGE.addRoom("garage","");
+        GARAGE.addRoom("garage driveway","");
+        GARAGE.addRoom("garage inside","");
 
         // STREET
         STREET.addRoom("block 1", "");
         STREET.addRoom("block 2", "");
-
-        // BILL'S HOUSE (locked)
-        BILLS_HOUSE.addRoom("living room", "Bill's living room");
-        BILLS_HOUSE.addRoom("kitchen", "Bill's kitchen");
-        BILLS_HOUSE.addRoom("bedroom", "Bill's bedroom");
 
         // PUB
         PUB.addRoom("main room", "A large room with tables and chairs");
         PUB.addRoom("bar counter", "A counter where the bartender stands");
         PUB.addRoom("toilets", "Dimly lit toilets");
 
+        // BILL'S HOUSE (locked)
+        BILLS_HOUSE.addRoom("living room", "Bill's living room");
+        BILLS_HOUSE.addRoom("kitchen", "Bill's kitchen");
+        BILLS_HOUSE.addRoom("bedroom", "Bill's bedroom");
+
         // ALLEY (locked)
         ALLEY.addRoom("Back alley", "A dead end with garbage");
         ALLEY.addRoom("Side alley", "A narrow way out to the other part of the street");
+
+        //MOTEL
+        MOTEL.addRoom("parking lot", "");
+        MOTEL.addRoom("lobby", "");
+        MOTEL.addRoom("room1", "");
+        MOTEL.addRoom("room2", "");
+        MOTEL.addRoom("room3", "");
+        MOTEL.addRoom("room4", "");
 
         // POLICE STATION (locked)
         POLICE_STATION.addRoom("entrance", "The station entrance");
@@ -90,7 +100,7 @@ public enum Places {
         HOUSE.connectPlaces("garden", GARDEN, "living room");
         GARDEN.connectPlaces("house", HOUSE, "front garden");
 
-        GARDEN.connectPlaces("garage", GARAGE, "garage");
+        GARDEN.connectPlaces("garage", GARAGE, "garage driveway");
         GARAGE.connectPlaces("garden", GARDEN, "side garden");
 
         GARDEN.connectPlaces("street", STREET, "front garden");
@@ -110,6 +120,7 @@ public enum Places {
 
         HOUSE.setCurrentRoom(HOUSE.getRooms().get("living room"));
         GARDEN.setCurrentRoom(GARDEN.getRooms().get("front garden"));
+        GARDEN.setCurrentRoom(GARAGE.getRooms().get("garage driveway"));
         STREET.setCurrentRoom(STREET.getRooms().get("block 1"));
         BILLS_HOUSE.setCurrentRoom(BILLS_HOUSE.getRooms().get("living room"));
         PUB.setCurrentRoom(PUB.getRooms().get("main room"));
@@ -133,6 +144,14 @@ public enum Places {
         GARDEN.getRooms().get("side garden").getEnemiesInRoom().add(ZOMBIE);
 
         STREET.getRooms().get("block 2").getEnemiesInRoom().add(ZOMBIE);
+
+        PUB.getRooms().get("main room").getEnemiesInRoom().add(ZOMBIE);
+        PUB.getRooms().get("main room").getEnemiesInRoom().add(ZOMBIE);
+
+        PUB.getRooms().get("toilets").getEnemiesInRoom().add(ZOMBIE);
+
+        ALLEY.getRooms().get("toilets").getEnemiesInRoom().add(ZOMBIE);
+        ALLEY.getRooms().get("toilets").getEnemiesInRoom().add(ZOMBIE);
 
         BILLS_HOUSE.getRooms().get("living room").getEnemiesInRoom().add(POLICE);
 
@@ -167,11 +186,11 @@ public enum Places {
         this.locked = locked;
     }
 
-    public String getRequiredKeyName() {
+    public Item.KeyItem getRequiredKeyName() {
         return requiredKeyName;
     }
 
-    public void setRequiredKeyName(String requiredKeyName) {
+    public void setRequiredKeyName(Item.KeyItem requiredKeyName) {
         this.requiredKeyName = requiredKeyName;
     }
 

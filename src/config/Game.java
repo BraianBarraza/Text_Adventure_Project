@@ -1,5 +1,6 @@
 package config;
 
+import characters.Enemy;
 import map.Places;
 import map.Places.Room;
 import characters.Player;
@@ -113,37 +114,84 @@ public class Game {
     }
 
     private void searchRoom() {
-        if (currentPlace.getCurrentRoom() == null) {
-            System.out.println("No current room");
-            return;
-        }
+
         Room r = currentPlace.getCurrentRoom();
+        Scanner sc = new Scanner(System.in);
+
         if (!r.getEnemiesInRoom().isEmpty()) {
+            System.out.println("\n¡Oh Fuck! " + r.getEnemiesInRoom().size() + " enemies heard me!");
+
+            for (Enemy.Zombie enemy : r.getEnemiesInRoom()) {
+                System.out.println(" - " + enemy.getName());
+            }
+
             startCombat(r.getEnemiesInRoom());
         }
+
         if (r.getNpc() != null) {
+            System.out.println(r.getNpc().getName() + " is here");
+            System.out.println("Do you want to interact ? y/n");
+            String response = sc.nextLine();
+
+            while (!response.equalsIgnoreCase("y") && (!response.equalsIgnoreCase("n"))){
+                System.out.println("Invalid Answer. Do you want to interact ? y/n");
+                response = sc.nextLine();
+            }
+            if (response.equalsIgnoreCase("y")){
             System.out.println(r.getNpc().getDialogue());
-            if (!r.getNpc().hasGivenKey() && r.getNpc().getKey() != null) {
-                player.addKeyItem((Item.KeyItem) r.getNpc().getKey());
-                r.getNpc().giveKey();
-            }
-        }
-        if (!r.getItemsInRoom().isEmpty()) {
-            List<Item> foundItems = new ArrayList<>(r.getItemsInRoom());
-            for (Item i : foundItems) {
-                if (i instanceof Item.HealingItem) {
-                    player.addHealingItem((Item.HealingItem) i);
-                } else if (i instanceof Item.Munition) {
-                    player.addMunition((Item.Munition) i);
-                } else if (i instanceof Item.KeyItem) {
-                    player.addKeyItem((Item.KeyItem) i);
-                } else if (i instanceof combat.Weapon) {
-                    player.addWeaponToInventory((combat.Weapon) i);
+                if (!r.getNpc().hasGivenKey() && r.getNpc().getKey() != null) {
+                    player.addKeyItem((Item.KeyItem) r.getNpc().getKey());
+                    r.getNpc().giveKey();
                 }
-                r.getItemsInRoom().remove(i);
+            }
+            else{
+                System.out.println("I should keep moving then...");;
             }
         }
-    }
+
+            if (!r.getItemsInRoom().isEmpty()) {
+                System.out.println("\nNice, I found:");
+
+                for (Item item : r.getItemsInRoom()) {
+                    System.out.println(" - " + item.getName());
+                }
+
+                System.out.println("\nIt could be useful, should keep it.");
+                System.out.print("Do you want to save items in inventory? (Y/N): ");
+
+                String response = sc.nextLine().trim().toLowerCase();
+
+                while (!response.equals("y") && !response.equals("n")) {
+                    System.out.print("Invalid response. Please enter Y or N: ");
+                    response = sc.nextLine().trim().toLowerCase();
+                }
+
+                if (response.equals("y")) {
+                    List<Item> foundItems = new ArrayList<>(r.getItemsInRoom());
+
+                    for (Item i : foundItems) {
+                        if (i instanceof Item.HealingItem) {
+                            player.addHealingItem((Item.HealingItem) i);
+                        } else if (i instanceof Item.Munition) {
+                            player.addMunition((Item.Munition) i);
+                        } else if (i instanceof Item.KeyItem) {
+                            player.addKeyItem((Item.KeyItem) i);
+                        } else if (i instanceof combat.Weapon) {
+                            player.addWeaponToInventory((combat.Weapon) i);
+                        }
+                        r.getItemsInRoom().remove(i);
+                    }
+
+                    System.out.println("\nAll items have been stored in your inventory.");
+                } else {
+                    System.out.println("\nYou decided to leave the items in the room.");
+                }
+            } else {
+                System.out.println("\nThere are no items in this room.");
+            }
+        }
+
+
 
     private void startCombat(List<characters.Enemy.Zombie> enemies) {
         combat.CombatActions actions = new combat.CombatActions();
@@ -151,7 +199,7 @@ public class Game {
 
         while (true) {
             if (player.getHp() <= 0) {
-                System.out.println("You died.");
+                System.out.println("You are dead...");
                 return;
             }
             boolean allDead = true;
@@ -162,7 +210,7 @@ public class Game {
                 }
             }
             if (allDead) {
-                System.out.println("All enemies are dead.");
+                System.out.println("I killed them. I better keep moving");
                 return;
             }
 
@@ -175,7 +223,7 @@ public class Game {
             System.out.println("a) Attack");
             System.out.println("b) Use Herb");
             String choice = sc.nextLine().toLowerCase();
-            if (choice.equals("a")) {
+            if (choice.equalsIgnoreCase("a")) {
                 System.out.println("Which enemy?");
                 String num = sc.nextLine();
                 int idx;
@@ -269,11 +317,11 @@ public class Game {
 
     private void useHerb() {
         if (!player.getInventoryHealingItems().isEmpty()) {
-            int heal = player.getInventoryHealingItems().get(0).getHealingPoints();
+            int heal = player.getInventoryHealingItems().getFirst().getHealingPoints();
             player.setHp(Math.min(player.getHp() + heal, 100));
-            System.out.println("Used " + player.getInventoryHealingItems().get(0).getName()
+            System.out.println("Used " + player.getInventoryHealingItems().getFirst().getName()
                     + " +" + heal + " HP");
-            player.getInventoryHealingItems().remove(0);
+            player.getInventoryHealingItems().removeFirst();
         } else {
             System.out.println("No healing items");
         }
