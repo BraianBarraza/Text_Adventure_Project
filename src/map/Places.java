@@ -230,9 +230,7 @@ public enum Places {
      * and into which room in the destination Place we arrive.
      */
     public void connectPlaces(String fromRoomName, Places destination, String toRoomName) {
-        // We create a new connection object
         Connection connection = new Connection(destination, toRoomName);
-        // Add it to the list of connections from the specified room
         connectionsByRoom
                 .computeIfAbsent(fromRoomName, k -> new ArrayList<>())
                 .add(connection);

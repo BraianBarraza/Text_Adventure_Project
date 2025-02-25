@@ -15,11 +15,16 @@ public class GameCommands {
         }
         System.out.println(" ");
 
+        String currentRoomName = currentPlace.getCurrentRoom().getName();
         if (!currentPlace.getRooms().isEmpty()) {
             System.out.println("You can move to the following rooms: ");
-            currentPlace.getRooms().forEach((roomName, room) ->
-                    System.out.println("- " + roomName)
-            );
+            currentPlace.getRooms().forEach((roomName, room) -> {
+                if (!roomName.equalsIgnoreCase(currentRoomName)){
+                System.out.println("- " + roomName);
+                }
+            });
+
+
         }
 
         List<Places.Connection> possibleConnections =
