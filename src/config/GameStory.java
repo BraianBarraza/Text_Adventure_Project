@@ -10,6 +10,7 @@ public class GameStory {
         System.out.println("Date: 20.06.2009" );
         System.out.println("Time: 20:25:13 Q (UTC-4)");
         System.out.println("tomorrow's estimated sunrise time: 04:49:28 Q (UTC-4)");
+        System.out.println("time since the first known attack: 06:15:28");
         System.out.println(" ");
         System.out.println("It's been 5 long years since that terrible day.");
         System.out.println("Sometimes when I look down, I still see that blood stain on my boot.");

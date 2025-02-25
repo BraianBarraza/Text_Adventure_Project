@@ -1,9 +1,9 @@
 package combat;
 
 public class Weapon extends Item {
-    private String name;
-    private int damage;
-    private String description;
+    private final String name;
+    private final int damage;
+    private final String description;
 
     public Weapon(String name, int damage, String description) {
         super("Weapon", "Description");
