@@ -10,21 +10,22 @@ public class GameCommands {
 
     public static Places move(Places currentPlace, Player player) {
         System.out.println("You are at the: " + currentPlace.getPlaceName());
+        System.out.println(currentPlace.getDescription());
+        System.out.println();
         if (currentPlace.getCurrentRoom() != null) {
             System.out.println("Current Room: " + currentPlace.getCurrentRoom().getName());
+            System.out.println(currentPlace.getCurrentRoom().getDescription());
         }
-        System.out.println(" ");
+        System.out.println();
 
         String currentRoomName = currentPlace.getCurrentRoom().getName();
         if (!currentPlace.getRooms().isEmpty()) {
             System.out.println("You can move to the following rooms: ");
             currentPlace.getRooms().forEach((roomName, room) -> {
-                if (!roomName.equalsIgnoreCase(currentRoomName)){
-                System.out.println("- " + roomName);
+                if (!roomName.equalsIgnoreCase(currentRoomName)) {
+                    System.out.println("- " + roomName);
                 }
             });
-
-
         }
 
         List<Places.Connection> possibleConnections =
@@ -39,7 +40,8 @@ public class GameCommands {
         }
 
         System.out.println("\nTo move, type: 'room <name of the room>' or 'exit <name of the place>'\n");
-        String command = new Scanner(System.in).nextLine().toLowerCase();
+        Scanner sc = new Scanner(System.in);
+        String command = sc.nextLine().toLowerCase();
 
         if (command.startsWith("room ")) {
             String roomName = command.substring(5).trim();
@@ -49,7 +51,6 @@ public class GameCommands {
             } else {
                 System.out.println("Invalid room name. Try again.");
             }
-
         } else if (command.startsWith("exit ")) {
             String placeToGo = command.substring(5).trim();
 
@@ -70,7 +71,7 @@ public class GameCommands {
                     boolean hasKey = false;
                     Item.KeyItem neededKey = next.getRequiredKey();
                     for (Item.KeyItem k : player.getInventoryKeys()) {
-                        if (k == neededKey) {
+                        if (k.getName().equalsIgnoreCase(neededKey.getName())) {
                             hasKey = true;
                             break;
                         }
@@ -89,6 +90,7 @@ public class GameCommands {
                 currentPlace.setCurrentRoom(
                         currentPlace.getRooms().get(selectedConnection.getDestinationRoomName())
                 );
+                System.out.println(currentPlace.getDescription() + "\n");
             }
 
         } else {

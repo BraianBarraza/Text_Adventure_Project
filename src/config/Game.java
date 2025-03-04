@@ -56,7 +56,6 @@ public class Game {
         System.out.println(currentPlace.getCurrentRoom());
 
         player = new Player("Player", 100);
-
         player.addWeaponToInventory(combat.WeaponFactory.FIST);
 
         gameLoop();
@@ -80,15 +79,15 @@ public class Game {
             System.out.println("what would you like to do?");
             String input = sc.nextLine();
 
-            if (input.equals("1")|| input.equalsIgnoreCase("move")) {
+            if (input.equals("1") || input.equalsIgnoreCase("move")) {
                 currentPlace = GameCommands.move(currentPlace, player);
-            } else if (input.equals("2")||input.equalsIgnoreCase("search")) {
+            } else if (input.equals("2") || input.equalsIgnoreCase("search")) {
                 searchRoom();
-            } else if (input.equals("3")||input.equalsIgnoreCase("status")) {
+            } else if (input.equals("3") || input.equalsIgnoreCase("status")) {
                 showPlayerStatus();
-            } else if (input.equals("4")||input.equalsIgnoreCase("inventory")) {
+            } else if (input.equals("4") || input.equalsIgnoreCase("inventory")) {
                 inventoryMenu();
-            } else if (input.equals("5")||input.equalsIgnoreCase("pause")) {
+            } else if (input.equals("5") || input.equalsIgnoreCase("pause")) {
                 inGame = false;
             } else {
                 System.out.println("Invalid option");
@@ -111,14 +110,25 @@ public class Game {
         Places.Room r = currentPlace.getCurrentRoom();
         Scanner sc = new Scanner(System.in);
 
-        if (!r.getEnemiesInRoom().isEmpty()) {
-            System.out.println("\n¡Oh Fuck! " + r.getEnemiesInRoom().size() + " enemies heard me!");
-
-            for (characters.Enemy.Zombie enemy : r.getEnemiesInRoom()) {
+        // Filtrar los enemigos vivos
+        List<characters.Enemy.Zombie> aliveEnemies = new java.util.ArrayList<>();
+        for (characters.Enemy.Zombie z : r.getEnemiesInRoom()) {
+            if (z.getHp() > 0) {
+                aliveEnemies.add(z);
+            }
+        }
+        if (!aliveEnemies.isEmpty()) {
+            if(aliveEnemies.size() == 1){
+                System.out.println("\n¡Oh Fuck! " + aliveEnemies.size() + " enemy heard me!");
+            }else{
+            System.out.println("\n¡Oh Fuck! " + aliveEnemies.size() + " enemies heard me!");
+            }
+            for (characters.Enemy.Zombie enemy : aliveEnemies) {
                 System.out.println(" - " + enemy.getName());
             }
-
-            startCombat(r.getEnemiesInRoom());
+            startCombat(aliveEnemies);
+        } else if (!r.getEnemiesInRoom().isEmpty()) {
+            System.out.println("\nNothing interesting here, just a dead body and a lot of blood.");
         }
 
         if (r.getNpc() != null) {
@@ -130,10 +140,11 @@ public class Game {
                 System.out.println("Invalid Answer. Do you want to interact ? y/n");
                 response = sc.nextLine();
             }
-            if (response.equalsIgnoreCase("y")){
+            if (response.equalsIgnoreCase("y")) {
                 System.out.println(r.getNpc().getDialogue());
                 if (!r.getNpc().hasGivenKey() && r.getNpc().getKey() != null) {
-                    player.addKeyItem((Item.KeyItem) r.getNpc().getKey());
+                    Item.KeyItem key = (Item.KeyItem) r.getNpc().getKey();
+                    player.addKeyItem(new Item.KeyItem(key.getName(), key.getDescription()));
                     r.getNpc().giveKey();
                 }
             } else {
@@ -163,13 +174,17 @@ public class Game {
 
                 for (Item i : foundItems) {
                     if (i instanceof Item.HealingItem) {
-                        player.addHealingItem((Item.HealingItem) i);
+                        Item.HealingItem herb = (Item.HealingItem) i;
+                        player.addHealingItem(new Item.HealingItem(herb.getName(), herb.getHealingPoints(), herb.getDescription()));
                     } else if (i instanceof Item.Munition) {
-                        player.addMunition((Item.Munition) i);
+                        Item.Munition ammo = (Item.Munition) i;
+                        player.addMunition(new Item.Munition(ammo.getName(), ammo.getQuantity(), ammo.getDescription()));
                     } else if (i instanceof Item.KeyItem) {
-                        player.addKeyItem((Item.KeyItem) i);
+                        Item.KeyItem key = (Item.KeyItem) i;
+                        player.addKeyItem(new Item.KeyItem(key.getName(), key.getDescription()));
                     } else if (i instanceof combat.Weapon) {
-                        player.addWeaponToInventory((combat.Weapon) i);
+                        combat.Weapon w = (combat.Weapon) i;
+                        player.addWeaponToInventory(new combat.Weapon(w.getName(), w.getDamage(), w.getDescription()));
                     }
                     r.getItemsInRoom().remove(i);
                 }
@@ -251,7 +266,6 @@ public class Game {
                 }
             }
 
-            // After a valid player turn, zombies attack if still alive
             for (characters.Enemy.Zombie z : enemies) {
                 if (z.getHp() > 0 && player.getHp() > 0) {
                     actions.zombieAttack(player, z);
@@ -265,7 +279,7 @@ public class Game {
 
     private combat.Weapon chooseWeapon() {
         Scanner sc = new Scanner(System.in);
-        java.util.List<combat.Weapon> weapons = player.getInventoryWeapons();
+        List<combat.Weapon> weapons = player.getInventoryWeapons();
         if (weapons.isEmpty()) {
             System.out.println("You have no weapons.");
             return null;
@@ -336,21 +350,21 @@ public class Game {
                 redCount++;
             }
         }
-        if (greenCount >= 2) {
+        if (greenCount >= 1 && redCount >= 1) {
             removeHerb("Green Herb");
-            removeHerb("Green Herb");
-            player.addHealingItem(new Item.HealingItem("Mixed 2 Greens", 70, "Mixed Herb"));
-            System.out.println("You created a Mixed Herb (70 HP)");
+            removeHerb("Red Herb");
+            player.addHealingItem(new Item.HealingItem("Mixed Red+Green", 100, "Mixed Herb"));
+            System.out.println("You created a Mixed Herb (100 HP)");
         } else if (redCount >= 2) {
             removeHerb("Red Herb");
             removeHerb("Red Herb");
             player.addHealingItem(new Item.HealingItem("Mixed 2 Reds", 70, "Mixed Herb"));
             System.out.println("You created a Mixed Herb (70 HP)");
-        } else if (greenCount >= 1 && redCount >= 1) {
+        } else if (greenCount >= 2) {
             removeHerb("Green Herb");
-            removeHerb("Red Herb");
-            player.addHealingItem(new Item.HealingItem("Mixed Red+Green", 100, "Mixed Herb"));
-            System.out.println("You created a Mixed Herb (100 HP)");
+            removeHerb("Green Herb");
+            player.addHealingItem(new Item.HealingItem("Mixed 2 Greens", 70, "Mixed Herb"));
+            System.out.println("You created a Mixed Herb (70 HP)");
         } else {
             System.out.println("Not enough herbs to combine");
         }

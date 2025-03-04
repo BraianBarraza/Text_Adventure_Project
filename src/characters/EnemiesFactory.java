@@ -1,15 +1,13 @@
 package characters;
 
 public class EnemiesFactory {
-        // Templates for enemies
-        public static final Enemy.Zombie ZOMBIE_TEMPLATE = new Enemy.Zombie("Zombie", "It is another infected person, it moves slow", 80, 10);
         public static final Enemy.Zombie DOG_TEMPLATE = new Enemy.Zombie("Infected Dog", "It is an infected Dog! It moves quickly, I can´t run away from it!", 50, 5);
         public static final Enemy.Zombie POLICE_TEMPLATE = new Enemy.Zombie("Police Zombie", "The zombie has a light bulletproof vest, and a cop helmet, this zombie is more resistant!", 120, 10);
         public static final Enemy.Zombie MUTATION_TEMPLATE = new Enemy.Zombie("Mutation", "It is a mutated Zombie! It is faster and stronger! I have to be careful", 500, 20);
 
-        // Factory methods to create new independent enemy instances
+        // Factory method for create new enemies in every place
         public static Enemy.Zombie createZombie() {
-                return new Enemy.Zombie(ZOMBIE_TEMPLATE.getName(), ZOMBIE_TEMPLATE.getDescription(), ZOMBIE_TEMPLATE.getHp(), ZOMBIE_TEMPLATE.getDamage());
+                return new Enemy.Zombie("Zombie","It is another infected person, it moves slow", 80, 10);
         }
 
         public static Enemy.Zombie createDog() {
