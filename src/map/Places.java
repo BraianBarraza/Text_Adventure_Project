@@ -104,7 +104,7 @@ public enum Places {
         POLICE_STATION.addRoom("roof", "The Police Station roof perfect for some air landing");
         POLICE_STATION.setRequiredKey(STATIONS_KEY);
 
-        //Current room(Initial Room) in every Place
+        // Current room (Initial Room) in every Place
         HOUSE.setCurrentRoom(HOUSE.getRooms().get("living room"));
         GARDEN.setCurrentRoom(GARDEN.getRooms().get("front garden"));
         GARAGE.setCurrentRoom(GARAGE.getRooms().get("garage driveway"));
@@ -115,36 +115,28 @@ public enum Places {
         POLICE_STATION.setCurrentRoom(POLICE_STATION.getRooms().get("entrance"));
         MOTEL.setCurrentRoom(MOTEL.getRooms().get("parking lot"));
 
-
-        // HOUSE <-> GARDEN
+        // Connections between places
         HOUSE.connectPlaces("living room", GARDEN, "front garden");
         GARDEN.connectPlaces("front garden", HOUSE, "living room");
 
-        // GARDEN <-> GARAGE
         GARDEN.connectPlaces("side garden", GARAGE, "garage driveway");
         GARAGE.connectPlaces("garage driveway", GARDEN, "side garden");
 
-        // GARDEN <-> STREET
         GARDEN.connectPlaces("front garden", LOWER_MAIN_STREET, "block 1");
         LOWER_MAIN_STREET.connectPlaces("block 1", GARDEN, "front garden");
 
-        // STREET <-> PUB
         LOWER_MAIN_STREET.connectPlaces("block 2", PUB, "main room");
         PUB.connectPlaces("main room", LOWER_MAIN_STREET, "block 2");
 
-        // STREET <-> BILL'S HOUSE
         LOWER_MAIN_STREET.connectPlaces("block 1", BILLS_HOUSE, "living room");
         BILLS_HOUSE.connectPlaces("living room", LOWER_MAIN_STREET, "block 1");
 
-        // PUB <-> ALLEY
         PUB.connectPlaces("bar counter", ALLEY, "Back alley");
         ALLEY.connectPlaces("Back alley", PUB, "bar counter");
 
-        // ALLEY <-> POLICE STATION
         ALLEY.connectPlaces("Side alley", POLICE_STATION, "entrance");
         POLICE_STATION.connectPlaces("entrance", ALLEY, "Side alley");
 
-        //MOTEL <-> MAIN_STREET
         MOTEL.connectPlaces("parking lot", MAIN_STREET, "block 1");
 
         // Setting ITEMS
@@ -158,22 +150,23 @@ public enum Places {
 
         BILLS_HOUSE.getRooms().get("bedroom").getItemsInRoom().add(BILLS_KEY);
 
-        // Setting ENEMIES
-        GARDEN.getRooms().get("side garden").getEnemiesInRoom().add(ZOMBIE);
-        LOWER_MAIN_STREET.getRooms().get("block 2").getEnemiesInRoom().add(ZOMBIE);
+        // Setting ENEMIES using factory methods for independent instances
+        GARDEN.getRooms().get("front garden").getEnemiesInRoom().add(characters.EnemiesFactory.createZombie());
+        GARDEN.getRooms().get("side garden").getEnemiesInRoom().add(characters.EnemiesFactory.createZombie());
+        LOWER_MAIN_STREET.getRooms().get("block 2").getEnemiesInRoom().add(characters.EnemiesFactory.createZombie());
 
-        PUB.getRooms().get("main room").getEnemiesInRoom().add(ZOMBIE);
-        PUB.getRooms().get("main room").getEnemiesInRoom().add(ZOMBIE);
-        PUB.getRooms().get("toilets").getEnemiesInRoom().add(ZOMBIE);
+        PUB.getRooms().get("main room").getEnemiesInRoom().add(characters.EnemiesFactory.createZombie());
+        PUB.getRooms().get("main room").getEnemiesInRoom().add(characters.EnemiesFactory.createZombie());
+        PUB.getRooms().get("toilets").getEnemiesInRoom().add(characters.EnemiesFactory.createZombie());
 
-        ALLEY.getRooms().get("Back alley").getEnemiesInRoom().add(DOG);
-        ALLEY.getRooms().get("Back alley").getEnemiesInRoom().add(DOG);
-        ALLEY.getRooms().get("Side alley").getEnemiesInRoom().add(DOG);
-        ALLEY.getRooms().get("Side alley").getEnemiesInRoom().add(DOG);
-        ALLEY.getRooms().get("Side alley").getEnemiesInRoom().add(DOG);
+        ALLEY.getRooms().get("Back alley").getEnemiesInRoom().add(characters.EnemiesFactory.createDog());
+        ALLEY.getRooms().get("Back alley").getEnemiesInRoom().add(characters.EnemiesFactory.createDog());
+        ALLEY.getRooms().get("Side alley").getEnemiesInRoom().add(characters.EnemiesFactory.createDog());
+        ALLEY.getRooms().get("Side alley").getEnemiesInRoom().add(characters.EnemiesFactory.createDog());
+        ALLEY.getRooms().get("Side alley").getEnemiesInRoom().add(characters.EnemiesFactory.createDog());
 
-        BILLS_HOUSE.getRooms().get("living room").getEnemiesInRoom().add(POLICE);
-        POLICE_STATION.getRooms().get("entrance").getEnemiesInRoom().add(POLICE);
+        BILLS_HOUSE.getRooms().get("living room").getEnemiesInRoom().add(characters.EnemiesFactory.createPolice());
+        POLICE_STATION.getRooms().get("entrance").getEnemiesInRoom().add(characters.EnemiesFactory.createPolice());
         POLICE_STATION.getRooms().get("office").getItemsInRoom().add(STATIONS_KEY);
 
         // Setting NPCs
@@ -227,7 +220,7 @@ public enum Places {
 
     /**
      * Connect two Places, indicating from which room in this Place we can go,
-     * and into which room in the destination Place we arrive.
+     * and into which room in the destination Place.
      */
     public void connectPlaces(String fromRoomName, Places destination, String toRoomName) {
         Connection connection = new Connection(destination, toRoomName);

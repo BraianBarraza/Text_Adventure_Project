@@ -7,11 +7,20 @@ import static combat.ItemsFactory.*;
 public class NpcFactory {
     public static final Npc BILL = new Npc(
             "Bill Denbrough",
-            "Hello friend, the situation is pretty fucked up, one of those bastard bite me. I couldn´t get away\n "
-                    + "'cause the *Alley* door is locked. I left the Alley Key at home\n"
-                    + "So go to *My House* and look for the *alleys key*. You may find some help.\n"
-                    + "The police assistance was here too, probably he already found it.\n" +
-                    " ", BILLS_KEY
+            """
+                    Hello friend, the situation is pretty fucked up, one of those bastard bite me. I couldn´t get away
+                    'cause the door to the *Alley* is locked. and I left the Alley Key at home
+                    So go to *My House* and look for the *Alleys key* it should be in my sleeping room.
+                    *Bill gave you his House Key*
+                    
+                    Oh! and by the way, you may find some help at my place. My brother Georgie was also here, I gave him the same instructions I just gave you, 
+                    good thing he had his copy of the keys with him. 
+                    *cough* *cough* *cough*.
+                    it's always good to have the help of the assistant chief cop,
+                    he's probably already found it... 
+                    I'm very sleepy Larry and its pretty cold in here. 
+                    Tell Georgie I love him.
+                    """, BILLS_KEY
     );
 
     public static final Npc TV = new Npc(
@@ -51,7 +60,13 @@ public class NpcFactory {
     );
 
     public static final Npc COX = new Npc(
-            "Colonel James O. Cox", "", null
+            " Yaesu FT-857D", """
+            fuck old bill has a Yaesu FT-857D radio!
+            with this maybe he can establish communication with Washington!....
+            *tuning emergency frequency...*
+            Operator: we are in a state of emergency please tune your radio or television and stay indoors...
+            Larry: This is Lieutenant Larry Underwood, identified by service number O-960319.\s
+            """, null
     );
 
 }

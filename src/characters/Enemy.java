@@ -8,6 +8,7 @@ public class Enemy {
         private int hp;
         private int damage;
 
+
         public Zombie(String name, String description, int hp, int damage) {
             this.name = name;
             this.description = description;
@@ -17,6 +18,10 @@ public class Enemy {
 
         public String getName() {
             return name;
+        }
+
+        public String getDescription() {
+            return description;
         }
 
         public int getHp() {
