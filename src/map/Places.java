@@ -9,26 +9,62 @@ import characters.Npc;
 import characters.Enemy.Zombie;
 import combat.Item;
 
-import static characters.EnemiesFactory.*;
 import static characters.NpcFactory.*;
 import static combat.ItemsFactory.*;
 import static combat.WeaponFactory.*;
 
 public enum Places {
 
-    HOUSE("House", "A small house with a garden exit", "I can watch the News in the Living room, " +
-            "and look if I find something useful in the kitchen or in the sleeping room", false, null),
-    GARAGE("Garage", "My bike is here it is a shame that a I cannot use it to escape from here","Good that I had some munition here", false, null),
-    GARDEN("Garden", "A quiet garden", "Front garden, side garden", false, null),
-    LOWER_MAIN_STREET("Lower Street", "A main street with smoke in the distance", "The street is dive in 2 parts the \"The MAIN LOWER STREET\" and the \"The MAIN STREET\" \n" +
-            "I live in the Lower Street, in the House next to me live the Beautiful Beverly Marsh but she is in Castle Rock right now, and Bob is my front neighbor, \n" +
-            "He works direct in the pub next to his house, a", false, null),
-    MAIN_STREET("Main Street", "A main street with smoke in the distance", "", false, null),
-    BILLS_HOUSE("Bill's House", "A locked house that belongs to Bill", "", true, BILLS_KEY),
-    PUB("Pub", "A local pub that might have supplies", "", false, null),
-    ALLEY("Alley", "A small alley leading to another street", "", true, ALLEY_KEY),
-    POLICE_STATION("Police Station", "A station that might have some weapon", "", true, STATIONS_KEY),
-    MOTEL("Motel", "The Motel from the town, I gotta see if Beverly Marsh and Carrie White are Ok ", "", false, null);
+    HOUSE(  "House",
+            "A small house with a garden exit",
+            "I can watch the News in the Living room, " +
+                    "and look if I find something useful in the kitchen or in my sleeping room", false, null),
+
+    GARAGE( "Garage",
+            "My bike is here it is a shame that a I cannot use it to escape from here",
+            "Good that I had some munition here", false, null),
+
+    GARDEN( "Garden",
+            "A quiet garden",
+            "Front garden, side garden",
+            false, null),
+
+    LOWER_MAIN_STREET("Lower Street",
+            "A main street with smoke in the distance, A truck hit Ben Mears House and both are on fire \n" +
+                    "I cant go this way, gotta find another",
+            "The street is dive in 2 parts the \"The MAIN LOWER STREET\" and the \"The MAIN STREET\" \n" +
+                    "I live in the Lower Street, in the House next to me live the Beautiful Beverly Marsh but she is in Chester Mill right now, and Bill Denbrough is my front neighbor, \n" +
+                    "He works direct in the pub next to his house, I should check if he is Ok", false, null),
+
+    MAIN_STREET("Main Street",
+            "A main street with smoke in the distance",
+            "",
+            false, null),
+
+    BILLS_HOUSE("Bills House",
+            "A locked house that belongs to Bill",
+            "",
+            true, BILLS_KEY),
+
+    PUB(    "Pub",
+            "A local pub that might have supplies",
+            "",
+            false, null),
+
+    ALLEY("Alley",
+            "A small alley leading to another street",
+            "",
+            true, ALLEY_KEY),
+
+    POLICE_STATION("Police Station",
+            "A station that might have some weapon",
+            "",
+            true, STATIONS_KEY),
+
+    MOTEL(  "Motel",
+            "The Motel from the town, I gotta see if Carrie White is Ok",
+            "",
+            false, null);
 
     private final String placeName;
     private final String description;
@@ -63,12 +99,12 @@ public enum Places {
         GARDEN.addRoom("front garden", "");
 
         // GARAGE
-        GARAGE.addRoom("garage driveway","");
-        GARAGE.addRoom("garage inside","");
+        GARAGE.addRoom("garage driveway", "");
+        GARAGE.addRoom("garage inside", "");
 
         // LOWER STREET
-        LOWER_MAIN_STREET.addRoom("block 1", "");
-        LOWER_MAIN_STREET.addRoom("block 2", "");
+        LOWER_MAIN_STREET.addRoom("block 1", "block 1/4");
+        LOWER_MAIN_STREET.addRoom("block 2", "block 2/4");
 
         // PUB
         PUB.addRoom("main room", "A large room with tables and chairs");
@@ -79,41 +115,32 @@ public enum Places {
         BILLS_HOUSE.addRoom("living room", "Bill's living room");
         BILLS_HOUSE.addRoom("kitchen", "Bill's kitchen");
         BILLS_HOUSE.addRoom("bedroom", "Bill's bedroom");
-        BILLS_HOUSE.setRequiredKey(BILLS_KEY);
 
         // ALLEY (locked)
         ALLEY.addRoom("Back alley", "A dead end with garbage");
         ALLEY.addRoom("Side alley", "A narrow way out to the other part of the street");
-        ALLEY.setRequiredKey(ALLEY_KEY);
 
         // MAIN STREET
-        MAIN_STREET.addRoom("main street", "The main Street from town street");
+        MAIN_STREET.addRoom("block 3", "block 3/4");
+        MAIN_STREET.addRoom("block 4", "block 4/4 there was a big crash at the avenue, it is impossible to go out of this street");
 
         // MOTEL
         MOTEL.addRoom("parking lot", "");
         MOTEL.addRoom("reception", "");
-        MOTEL.addRoom("room1", "");
-        MOTEL.addRoom("room2", "");
-        MOTEL.addRoom("room3", "");
-        MOTEL.addRoom("room4", "");
+        MOTEL.addRoom("room 1", "");
+        MOTEL.addRoom("room 2", "");
+        MOTEL.addRoom("room 3", "");
+        MOTEL.addRoom("room 4", "");
 
         // POLICE STATION (locked)
         POLICE_STATION.addRoom("entrance", "The station entrance");
         POLICE_STATION.addRoom("office", "An office with papers everywhere");
         POLICE_STATION.addRoom("armory", "An armory that might contain weapons");
         POLICE_STATION.addRoom("roof", "The Police Station roof perfect for some air landing");
-        POLICE_STATION.setRequiredKey(STATIONS_KEY);
 
-        // Current room (Initial Room) in every Place
+
+        // Current room (Initial Room)
         HOUSE.setCurrentRoom(HOUSE.getRooms().get("living room"));
-        GARDEN.setCurrentRoom(GARDEN.getRooms().get("front garden"));
-        GARAGE.setCurrentRoom(GARAGE.getRooms().get("garage driveway"));
-        LOWER_MAIN_STREET.setCurrentRoom(LOWER_MAIN_STREET.getRooms().get("block 1"));
-        BILLS_HOUSE.setCurrentRoom(BILLS_HOUSE.getRooms().get("living room"));
-        PUB.setCurrentRoom(PUB.getRooms().get("main room"));
-        ALLEY.setCurrentRoom(ALLEY.getRooms().get("Back alley"));
-        POLICE_STATION.setCurrentRoom(POLICE_STATION.getRooms().get("entrance"));
-        MOTEL.setCurrentRoom(MOTEL.getRooms().get("parking lot"));
 
         // Connections between places
         HOUSE.connectPlaces("living room", GARDEN, "front garden");
@@ -134,10 +161,14 @@ public enum Places {
         PUB.connectPlaces("bar counter", ALLEY, "Back alley");
         ALLEY.connectPlaces("Back alley", PUB, "bar counter");
 
-        ALLEY.connectPlaces("Side alley", POLICE_STATION, "entrance");
-        POLICE_STATION.connectPlaces("entrance", ALLEY, "Side alley");
+        ALLEY.connectPlaces("Side alley", MAIN_STREET, "block 3");
+        MAIN_STREET.connectPlaces("block 3", ALLEY, "Side alley");
 
-        MOTEL.connectPlaces("parking lot", MAIN_STREET, "block 1");
+        MAIN_STREET.connectPlaces("block 3", MOTEL, "parking lot");
+        MOTEL.connectPlaces("parking lot", MAIN_STREET, "block 3");
+
+        MAIN_STREET.connectPlaces("block 4", POLICE_STATION, "entrance");
+        POLICE_STATION.connectPlaces("entrance", MAIN_STREET, "Block 4");
 
         // Setting ITEMS
         HOUSE.getRooms().get("kitchen").getItemsInRoom().add(PISTOL_MUNITION_BOX);
@@ -145,33 +176,70 @@ public enum Places {
         HOUSE.getRooms().get("sleeping room").getItemsInRoom().add(PISTOL);
         HOUSE.getRooms().get("sleeping room").getItemsInRoom().add(GREEN_HERB);
 
+        GARAGE.getRooms().get("garage driveway").getItemsInRoom().add(RED_HERB);
         GARAGE.getRooms().get("garage inside").getItemsInRoom().add(PISTOL_MUNITION_BOX);
-        GARAGE.getRooms().get("garage inside").getItemsInRoom().add(RED_HERB);
 
-        BILLS_HOUSE.getRooms().get("bedroom").getItemsInRoom().add(BILLS_KEY);
+        BILLS_HOUSE.getRooms().get("living room").getItemsInRoom().add(ALLEY_KEY);
+        BILLS_HOUSE.getRooms().get("living room").getItemsInRoom().add(PISTOL_MUNITION_BOX);
+        BILLS_HOUSE.getRooms().get("kitchen").getItemsInRoom().add(GREEN_HERB);
 
-        // Setting ENEMIES using factory methods for independent instances
+
+
+        MOTEL.getRooms().get("room 3").getItemsInRoom().add(SHOTGUN);
+        MOTEL.getRooms().get("room 3").getItemsInRoom().add(SHOTGUN_MUNITION_BOX);
+
+        // Setting ENEMIES
         GARDEN.getRooms().get("front garden").getEnemiesInRoom().add(characters.EnemiesFactory.createZombie());
         GARDEN.getRooms().get("side garden").getEnemiesInRoom().add(characters.EnemiesFactory.createZombie());
+
         LOWER_MAIN_STREET.getRooms().get("block 2").getEnemiesInRoom().add(characters.EnemiesFactory.createZombie());
 
         PUB.getRooms().get("main room").getEnemiesInRoom().add(characters.EnemiesFactory.createZombie());
         PUB.getRooms().get("main room").getEnemiesInRoom().add(characters.EnemiesFactory.createZombie());
         PUB.getRooms().get("toilets").getEnemiesInRoom().add(characters.EnemiesFactory.createZombie());
 
+        BILLS_HOUSE.getRooms().get("living room").getEnemiesInRoom().add(characters.EnemiesFactory.createPolice());
+
         ALLEY.getRooms().get("Back alley").getEnemiesInRoom().add(characters.EnemiesFactory.createDog());
         ALLEY.getRooms().get("Back alley").getEnemiesInRoom().add(characters.EnemiesFactory.createDog());
         ALLEY.getRooms().get("Side alley").getEnemiesInRoom().add(characters.EnemiesFactory.createDog());
         ALLEY.getRooms().get("Side alley").getEnemiesInRoom().add(characters.EnemiesFactory.createDog());
         ALLEY.getRooms().get("Side alley").getEnemiesInRoom().add(characters.EnemiesFactory.createDog());
 
-        BILLS_HOUSE.getRooms().get("living room").getEnemiesInRoom().add(characters.EnemiesFactory.createPolice());
+        MAIN_STREET.getRooms().get("block 3").getEnemiesInRoom().add(characters.EnemiesFactory.createZombie());
+        MAIN_STREET.getRooms().get("block 3").getEnemiesInRoom().add(characters.EnemiesFactory.createDog());
+
+        MAIN_STREET.getRooms().get("block 4").getEnemiesInRoom().add(characters.EnemiesFactory.createZombie());
+        MAIN_STREET.getRooms().get("block 4").getEnemiesInRoom().add(characters.EnemiesFactory.createPolice());
+
+        //Motel Parking lot
+        MOTEL.getRooms().get("parking lot").getEnemiesInRoom().add(characters.EnemiesFactory.createPolice());
+        MOTEL.getRooms().get("parking lot").getEnemiesInRoom().add(characters.EnemiesFactory.createZombie());
+        MOTEL.getRooms().get("parking lot").getEnemiesInRoom().add(characters.EnemiesFactory.createDog());
+        //Motel rooms
+        MOTEL.getRooms().get("room 1").getEnemiesInRoom().add(characters.EnemiesFactory.createZombie());
+        MOTEL.getRooms().get("room 1").getEnemiesInRoom().add(characters.EnemiesFactory.createZombie());
+        MOTEL.getRooms().get("room 2").getEnemiesInRoom().add(characters.EnemiesFactory.createDog());
+        MOTEL.getRooms().get("room 2").getEnemiesInRoom().add(characters.EnemiesFactory.createZombie());
+        MOTEL.getRooms().get("room 3").getEnemiesInRoom().add(characters.EnemiesFactory.createZombie());
+        MOTEL.getRooms().get("room 3").getEnemiesInRoom().add(characters.EnemiesFactory.createPolice());
+        MOTEL.getRooms().get("room 4").getEnemiesInRoom().add(characters.EnemiesFactory.createPolice());
+        MOTEL.getRooms().get("room 4").getEnemiesInRoom().add(characters.EnemiesFactory.createPolice());
+        MOTEL.getRooms().get("room 4").getEnemiesInRoom().add(characters.EnemiesFactory.createZombie());
+
+
         POLICE_STATION.getRooms().get("entrance").getEnemiesInRoom().add(characters.EnemiesFactory.createPolice());
-        POLICE_STATION.getRooms().get("office").getItemsInRoom().add(STATIONS_KEY);
+        POLICE_STATION.getRooms().get("entrance").getEnemiesInRoom().add(characters.EnemiesFactory.createPolice());
+        POLICE_STATION.getRooms().get("office").getEnemiesInRoom().add(characters.EnemiesFactory.createPolice());
+        POLICE_STATION.getRooms().get("office").getEnemiesInRoom().add(characters.EnemiesFactory.createZombie());
+        //Final Fight
+        POLICE_STATION.getRooms().get("roof").getEnemiesInRoom().add(characters.EnemiesFactory.createMutation());
 
         // Setting NPCs
         HOUSE.getRooms().get("living room").setNpc(TV);
         PUB.getRooms().get("bar counter").setNpc(BILL);
+        BILLS_HOUSE.getRooms().get("bedroom").setNpc(COX);
+        MOTEL.getRooms().get("reception").setNpc(CARRIE);
     }
 
     public String getPlaceName() {
@@ -230,7 +298,7 @@ public enum Places {
     }
 
     /**
-     * Adds a Room to this Place
+     * Adds a Room to a Place
      */
     public void addRoom(String name, String description) {
         rooms.put(name, new Room(name, description));

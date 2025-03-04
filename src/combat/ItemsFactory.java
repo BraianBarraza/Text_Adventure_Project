@@ -3,8 +3,8 @@ package combat;
 public class ItemsFactory {
 
     //MUNITION
-    public static final Item.Munition PISTOL_MUNITION_BOX = new Item.Munition("9mm Bullets box", 20, "A 9mm munition Box, Perfect for my Beretta");
-    public static final Item.Munition SHOTGUN_MUNITION_BOX = new Item.Munition("12mm Shells box", 10, "A 12mm Munition Shells box perfect for a Remington");
+    public static final Item.Munition PISTOL_MUNITION_BOX = new Item.Munition("9mm Bullets box", 10, "A 9mm munition Box, Perfect for my Beretta");
+    public static final Item.Munition SHOTGUN_MUNITION_BOX = new Item.Munition("12mm Shells box", 5, "A 12mm Munition Shells box perfect for a Remington");
 
     //HEALING
     public static final Item.HealingItem GREEN_HERB = new Item.HealingItem("Green Herb",25, "It can help you with the pain and the infection");

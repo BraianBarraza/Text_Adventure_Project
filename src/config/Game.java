@@ -52,12 +52,11 @@ public class Game {
         gameStarted = true;
         GameStory.intro();
 
-        // Start in HOUSE (already initialized in the enum)
         currentPlace = Places.HOUSE;
         System.out.println(currentPlace.getCurrentRoom());
 
         player = new Player("Player", 100);
-        // Add an initial weapon
+
         player.addWeaponToInventory(combat.WeaponFactory.FIST);
 
         gameLoop();
