@@ -6,7 +6,6 @@ import combat.Weapon;
 import combat.WeaponFactory;
 import combat.Item;
 import combat.ItemsFactory;
-
 import java.io.*;
 import java.util.*;
 
@@ -146,4 +145,3 @@ public class GamePersistence {
         return new GameState(currentPlace, player);
     }
 }
-

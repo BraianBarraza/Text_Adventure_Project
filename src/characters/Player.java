@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
-    private final String name = "Larry Underwood";
+    private String name;
     private int hp;
     private List<Weapon> inventoryWeapons;
     private List<HealingItem> inventoryHealingItems;
@@ -18,6 +18,7 @@ public class Player {
     private List<KeyItem> inventoryKeys;
 
     public Player(String name, int hp) {
+        this.name = name;
         this.hp = hp;
         this.inventoryWeapons = new ArrayList<>();
         this.inventoryHealingItems = new ArrayList<>();
@@ -27,6 +28,10 @@ public class Player {
 
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getHp() {
