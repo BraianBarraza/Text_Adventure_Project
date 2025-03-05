@@ -2,11 +2,12 @@ package characters;
 
 import combat.Item;
 import combat.Weapon;
+
 import java.util.Map;
 
 public class Inventory {
 
-    public static class PlayerInventory{
+    public static class PlayerInventory {
         private Map<String, Weapon> playerWeapons;
         private Map<String, Item> playerItems;
 

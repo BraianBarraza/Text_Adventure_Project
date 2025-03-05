@@ -15,16 +15,16 @@ import static combat.WeaponFactory.*;
 
 public enum Places {
 
-    HOUSE(  "House",
+    HOUSE("House",
             "A small house with a garden exit",
             "I can watch the News in the Living room, " +
                     "and look if I find something useful in the kitchen or in my sleeping room", false, null),
 
-    GARAGE( "Garage",
+    GARAGE("Garage",
             "My bike is here it is a shame that a I cannot use it to escape from here",
             "Good that I had some munition here", false, null),
 
-    GARDEN( "Garden",
+    GARDEN("Garden",
             "A quiet garden",
             "Front garden, side garden",
             false, null),
@@ -46,7 +46,7 @@ public enum Places {
             "",
             true, BILLS_KEY),
 
-    PUB(    "Pub",
+    PUB("Pub",
             "A local pub that might have supplies",
             "",
             false, null),
@@ -61,7 +61,7 @@ public enum Places {
             "",
             true, STATIONS_KEY),
 
-    MOTEL(  "Motel",
+    MOTEL("Motel",
             "The Motel from the town, I gotta see if Carrie White is Ok",
             "",
             false, null);
@@ -117,8 +117,8 @@ public enum Places {
         BILLS_HOUSE.addRoom("bedroom", "Bill's bedroom");
 
         // ALLEY (locked)
-        ALLEY.addRoom("Back alley", "A dead end with garbage");
-        ALLEY.addRoom("Side alley", "A narrow way out to the other part of the street");
+        ALLEY.addRoom("back alley", "A dead end with garbage");
+        ALLEY.addRoom("side alley", "A narrow way out to the other part of the street");
 
         // MAIN STREET
         MAIN_STREET.addRoom("block 3", "block 3/4");
@@ -159,10 +159,10 @@ public enum Places {
         BILLS_HOUSE.connectPlaces("living room", LOWER_MAIN_STREET, "block 1");
 
         PUB.connectPlaces("bar counter", ALLEY, "Back alley");
-        ALLEY.connectPlaces("Back alley", PUB, "bar counter");
+        ALLEY.connectPlaces("back alley", PUB, "bar counter");
 
-        ALLEY.connectPlaces("Side alley", MAIN_STREET, "block 3");
-        MAIN_STREET.connectPlaces("block 3", ALLEY, "Side alley");
+        ALLEY.connectPlaces("side alley", MAIN_STREET, "block 3");
+        MAIN_STREET.connectPlaces("block 3", ALLEY, "side alley");
 
         MAIN_STREET.connectPlaces("block 3", MOTEL, "parking lot");
         MOTEL.connectPlaces("parking lot", MAIN_STREET, "block 3");
@@ -171,22 +171,21 @@ public enum Places {
         POLICE_STATION.connectPlaces("entrance", MAIN_STREET, "Block 4");
 
         // Setting ITEMS
-        HOUSE.getRooms().get("kitchen").getItemsInRoom().add(PISTOL_MUNITION_BOX);
+        HOUSE.getRooms().get("kitchen").getItemsInRoom().add(combat.ItemsFactory.createPistolMunition());
         HOUSE.getRooms().get("kitchen").getItemsInRoom().add(KNIFE);
         HOUSE.getRooms().get("sleeping room").getItemsInRoom().add(PISTOL);
-        HOUSE.getRooms().get("sleeping room").getItemsInRoom().add(GREEN_HERB);
+        HOUSE.getRooms().get("sleeping room").getItemsInRoom().add(combat.ItemsFactory.createGreenHerb());
 
-        GARAGE.getRooms().get("garage driveway").getItemsInRoom().add(RED_HERB);
-        GARAGE.getRooms().get("garage inside").getItemsInRoom().add(PISTOL_MUNITION_BOX);
+        GARAGE.getRooms().get("garage driveway").getItemsInRoom().add(combat.ItemsFactory.createRedHerb());
+        GARAGE.getRooms().get("garage inside").getItemsInRoom().add(combat.ItemsFactory.createPistolMunition());
 
         BILLS_HOUSE.getRooms().get("living room").getItemsInRoom().add(ALLEY_KEY);
-        BILLS_HOUSE.getRooms().get("living room").getItemsInRoom().add(PISTOL_MUNITION_BOX);
-        BILLS_HOUSE.getRooms().get("kitchen").getItemsInRoom().add(GREEN_HERB);
-
+        BILLS_HOUSE.getRooms().get("living room").getItemsInRoom().add(combat.ItemsFactory.createPistolMunition());
+        BILLS_HOUSE.getRooms().get("kitchen").getItemsInRoom().add(combat.ItemsFactory.createGreenHerb());
 
 
         MOTEL.getRooms().get("room 3").getItemsInRoom().add(SHOTGUN);
-        MOTEL.getRooms().get("room 3").getItemsInRoom().add(SHOTGUN_MUNITION_BOX);
+        MOTEL.getRooms().get("room 3").getItemsInRoom().add(combat.ItemsFactory.createShotgunMunition());
 
         // Setting ENEMIES
         GARDEN.getRooms().get("front garden").getEnemiesInRoom().add(characters.EnemiesFactory.createZombie());
@@ -200,11 +199,11 @@ public enum Places {
 
         BILLS_HOUSE.getRooms().get("living room").getEnemiesInRoom().add(characters.EnemiesFactory.createPolice());
 
-        ALLEY.getRooms().get("Back alley").getEnemiesInRoom().add(characters.EnemiesFactory.createDog());
-        ALLEY.getRooms().get("Back alley").getEnemiesInRoom().add(characters.EnemiesFactory.createDog());
-        ALLEY.getRooms().get("Side alley").getEnemiesInRoom().add(characters.EnemiesFactory.createDog());
-        ALLEY.getRooms().get("Side alley").getEnemiesInRoom().add(characters.EnemiesFactory.createDog());
-        ALLEY.getRooms().get("Side alley").getEnemiesInRoom().add(characters.EnemiesFactory.createDog());
+        ALLEY.getRooms().get("back alley").getEnemiesInRoom().add(characters.EnemiesFactory.createDog());
+        ALLEY.getRooms().get("back alley").getEnemiesInRoom().add(characters.EnemiesFactory.createDog());
+        ALLEY.getRooms().get("side alley").getEnemiesInRoom().add(characters.EnemiesFactory.createDog());
+        ALLEY.getRooms().get("side alley").getEnemiesInRoom().add(characters.EnemiesFactory.createDog());
+        ALLEY.getRooms().get("side alley").getEnemiesInRoom().add(characters.EnemiesFactory.createDog());
 
         MAIN_STREET.getRooms().get("block 3").getEnemiesInRoom().add(characters.EnemiesFactory.createZombie());
         MAIN_STREET.getRooms().get("block 3").getEnemiesInRoom().add(characters.EnemiesFactory.createDog());
@@ -266,9 +265,6 @@ public enum Places {
         return requiredKeyName;
     }
 
-    public void setRequiredKey(Item.KeyItem requiredKeyName) {
-        this.requiredKeyName = requiredKeyName;
-    }
 
     public Map<String, Room> getRooms() {
         return rooms;

@@ -1,6 +1,7 @@
 package combat;
 
 import java.util.Random;
+
 import characters.Enemy.Zombie;
 import characters.Player;
 
@@ -28,6 +29,7 @@ public class CombatActions {
 
     /**
      * Player attack: check if the zombie is alive, check the weapon to use, and if it needs ammo, and do the ammo math.
+     *
      * @param player
      * @param zombie
      * @param weapon
@@ -39,7 +41,7 @@ public class CombatActions {
         }
 
         if (weapon.getName().equalsIgnoreCase("Pistol")) {
-            String requiredAmmoName = ItemsFactory.PISTOL_MUNITION_BOX.getName();
+            String requiredAmmoName = ItemsFactory.createPistolMunition().getName();
             if (!player.hasAmmo(requiredAmmoName)) {
                 System.out.println("No " + requiredAmmoName + " left. You cannot shoot.");
                 return;
@@ -47,7 +49,7 @@ public class CombatActions {
             player.consumeAmmo(requiredAmmoName);
             applyRandomShot(zombie, weapon);
         } else if (weapon.getName().equalsIgnoreCase("Shotgun")) {
-            String requiredAmmoName = ItemsFactory.SHOTGUN_MUNITION_BOX.getName();
+            String requiredAmmoName = ItemsFactory.createShotgunMunition().getName();
             if (!player.hasAmmo(requiredAmmoName)) {
                 System.out.println("No " + requiredAmmoName + " left. You cannot shoot.");
                 return;

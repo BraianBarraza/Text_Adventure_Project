@@ -5,11 +5,12 @@ import combat.Item.HealingItem;
 import combat.Item.Munition;
 import combat.Item.KeyItem;
 import combat.Weapon;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
-    private String name;
+    private final String name = "Larry Underwood";
     private int hp;
     private List<Weapon> inventoryWeapons;
     private List<HealingItem> inventoryHealingItems;
@@ -17,7 +18,6 @@ public class Player {
     private List<KeyItem> inventoryKeys;
 
     public Player(String name, int hp) {
-        this.name = name;
         this.hp = hp;
         this.inventoryWeapons = new ArrayList<>();
         this.inventoryHealingItems = new ArrayList<>();

@@ -2,15 +2,32 @@ package combat;
 
 public class ItemsFactory {
 
-    //MUNITION
-    public static final Item.Munition PISTOL_MUNITION_BOX = new Item.Munition("9mm Bullets box", 10, "A 9mm munition Box, Perfect for my Beretta");
-    public static final Item.Munition SHOTGUN_MUNITION_BOX = new Item.Munition("12mm Shells box", 5, "A 12mm Munition Shells box perfect for a Remington");
+    //MUNITION Items Factory
+    public static Item.Munition createPistolMunition() {
+        return new Item.Munition("9mm Bullets box", 10, "A 9mm munition Box, Perfect for my Beretta");
+    }
 
-    //HEALING
-    public static final Item.HealingItem GREEN_HERB = new Item.HealingItem("Green Herb",30, "It can help you with the pain and the infection");
-    public static final Item.HealingItem RED_HERB = new Item.HealingItem("Red Herb", 10, "Not as powerful as a green her but it helps");
-    public static final Item.HealingItem MIX_HERB = new Item.HealingItem("Mixed Herb", 80, "Basic mixed herb, restores a good amount of health");
-    public static final Item.HealingItem GR_MIX_HERB = new Item.HealingItem("Mixed Herb", 100, "Restore your full health, it can be obtain mixing a red a green herb");
+    public static Item.Munition createShotgunMunition() {
+        return new Item.Munition("12mm Shells box", 5, "A 12mm Munition Shells box perfect for a Remington");
+    }
+
+    //HEALING Items Factory
+    public static Item.HealingItem createGreenHerb() {
+        return new Item.HealingItem("Green Herb", 25, "A Green Herb that can help me with the pain and the infection");
+    }
+
+    public static Item.HealingItem createRedHerb() {
+        return new Item.HealingItem("Red Herb", 25, "A Red Herb that can help me with the pain and the infection");
+
+    }
+
+    public static Item.HealingItem createNormalMixedHerb() {
+        return new Item.HealingItem("Normal Mixed Herb", 75, "A combination of both herbs, the effect is stronger");
+    }
+
+    public static Item.HealingItem createSuperMixedHerb() {
+        return new Item.HealingItem("Super Mixed Herb", 100, "The perfect herbs combination, it is even stronger a combine G+G or R+R");
+    }
 
     //KEYS
     public static final Item.KeyItem BILLS_KEY = new Item.KeyItem("Key to Bill's House", "Opens Bill's House");

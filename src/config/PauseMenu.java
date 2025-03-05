@@ -3,30 +3,29 @@ package config;
 import java.util.Scanner;
 
 public class PauseMenu {
-
     static Scanner playerMenuChoice = new Scanner(System.in);
 
-    public Scanner getPlayerMenuChoice() {
-        return playerMenuChoice;
-    }
-
     public static void menuContinueCurrentGame() {
-        //Todo Continue the current Game
+        System.out.println("Resuming current game...");
     }
 
-
-
-    public static void menuStartNewGameOption() {
-//        if(getPlayerMenuChoice.equals("start")){
-//
-//        }
+    public static void menuSaveGameOption(GameState state) {
+        GamePersistence.saveGame(state, "gamestate.txt");
     }
 
-    public static void menuSaveGameOption() {
-        //TODO Save the current Game
+    public static GameState menuLoadFileOption() {
+        return GamePersistence.loadGame("gamestate.txt");
     }
 
-    public static void menuLoadFileOption() {
-        //TODO Load an old File
+    public static void exitWithoutExit() {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Are you sure you want to exit without saving? (Y/N): ");
+        String response = sc.nextLine().trim().toLowerCase();
+        if (response.equals("y")) {
+            System.out.println("Exiting game without saving. Goodbye!");
+            System.exit(0);
+        } else {
+            System.out.println("Exit cancelled. Returning to game...");
+        }
     }
 }
