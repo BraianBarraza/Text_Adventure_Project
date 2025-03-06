@@ -425,7 +425,7 @@ public class Game {
             removeHerb("Green Herb");
             removeHerb("Red Herb");
             player.addHealingItem(ItemsFactory.createSuperMixedHerb());
-            System.out.println("You create a: " + ItemsFactory.createSuperMixedHerb().getName() + " HP: " + ItemsFactory.createSuperMixedHerb().getHealingPoints() );
+            System.out.println("You create a: " + ItemsFactory.createSuperMixedHerb().getName() + " HP: " + ItemsFactory.createSuperMixedHerb().getHealingPoints());
         } else if (redCount >= 2) {
             removeHerb("Red Herb");
             removeHerb("Red Herb");

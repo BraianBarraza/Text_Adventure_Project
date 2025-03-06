@@ -26,6 +26,8 @@ public class GameStory {
                 
                 Tutorial: use "2. Search" to discover what a room or a place contains, but be careful,
                 you can also find some unpleasantry surprises.
+                If you feel lost or dont know where to go, use "3. Player Status", it will gives you information about your 
+                current place and room.
                 """);
     }
 
@@ -50,7 +52,7 @@ public class GameStory {
                                       ///     ||     \\\\\\
                                      ///      ||      \\\\\\
                                      ||  ___  ||  _O_  ||
-                           .-_-.     || |   | || || ||     .-_-.
+                           .-_-.     || |   | || |   | ||     .-_-.
                          .'d(x)b'.   |A'._Y_|_||_|_Y_.'A|   .'d(x)b'.
                          |(x)O(x)|---|@@@@@@@@@@@@@@@@@@|---|(x)O(x)|
                          |(x)O(x)|===|@@@@@@@@xxx@@@@@@@|===|(x)O(x)|

@@ -58,11 +58,15 @@ public class NpcFactory {
                     
                     I should go for my old gun, I think I let it in the *Sleeping room*.
                     
-                    Tutorial 2: Yo can press "1. Move" to move around the map, the map is conformed by "Places" and inside of them there are "Rooms" 
+                    Tutorial 2: Yo can press "1. Move" to move around the map, the map is conformed by "Places" and inside of them there are "Rooms"
                     every one of these has an own name, if you want to go to your Sleeping room just type "room sleeping room"
-                    and if you want to go to another Place for example the Garden just type "exit garden". 
-                    (UPPERCASE, lowercase and CamelCase are accepted but false sp a ces, misspelling a wodr or us|ng some other symbols are not, so type correctly),
+                    and if you want to go to another Place for example the Garden just type "exit garden".
+                    Also every place has an exit place you cant go direct from the kitchen to the garden, cause the exit is in the living room
+                    (UPPERCASE or lowercase can be accepted but false sp a ces, misspelling a wodr or us|ng some other symbols are not, so type correctly),
                     And try to check every place around you may find something useful.
+                    
+                    Resume: every time yo do some noise(search) a zombie can hear you so be aware, be careful with the name of the places and rooms and
+                    every place has a room with the exit to other places.
                     """, null
 
 
@@ -130,8 +134,10 @@ public class NpcFactory {
                     
                     Larry: Roger that, sir. I'll be there...
                     
-                    *Cox: One last thing, Larry—don't blame yourself for what those soldiers did to the locals. I saw the images.
+                    *Cox: One last thing, Larry don't blame yourself for what those soldiers did to the locals. I saw the images.
                     It's not your fault. Move forward now. Over and Out*
+                    
+                    Resume: The General will send a Helicopter for your extraction ! GO TO THE *POLICE STATION*
                     """,
             null
     );
@@ -157,6 +163,7 @@ public class NpcFactory {
                     *Carrie gave you the Police Station Key*
                     
                     I am so scare Larry...
+                  
                     """,
             STATIONS_KEY
     );

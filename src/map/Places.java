@@ -159,7 +159,7 @@ public enum Places {
         LOWER_MAIN_STREET.connectPlaces("block 1", BILLS_HOUSE, "living room");
         BILLS_HOUSE.connectPlaces("living room", LOWER_MAIN_STREET, "block 1");
 
-        PUB.connectPlaces("bar counter", ALLEY, "Back alley");
+        PUB.connectPlaces("bar counter", ALLEY, "back alley");
         ALLEY.connectPlaces("back alley", PUB, "bar counter");
 
         ALLEY.connectPlaces("side alley", MAIN_STREET, "block 3");
@@ -184,9 +184,20 @@ public enum Places {
         BILLS_HOUSE.getRooms().get("living room").getItemsInRoom().add(combat.ItemsFactory.createPistolMunition());
         BILLS_HOUSE.getRooms().get("kitchen").getItemsInRoom().add(combat.ItemsFactory.createGreenHerb());
 
+        ALLEY.getRooms().get("back alley").getItemsInRoom().add(combat.ItemsFactory.createRedHerb());
 
+        MOTEL.getRooms().get("room 1").getItemsInRoom().add(combat.ItemsFactory.createPistolMunition());
+        MOTEL.getRooms().get("room 2").getItemsInRoom().add(combat.ItemsFactory.createGreenHerb());
         MOTEL.getRooms().get("room 3").getItemsInRoom().add(SHOTGUN);
         MOTEL.getRooms().get("room 3").getItemsInRoom().add(combat.ItemsFactory.createShotgunMunition());
+        MOTEL.getRooms().get("room 4").getItemsInRoom().add(combat.ItemsFactory.createRedHerb());
+
+        POLICE_STATION.getRooms().get("entrance").getItemsInRoom().add(combat.ItemsFactory.createRedHerb());
+        POLICE_STATION.getRooms().get("entrance").getItemsInRoom().add(combat.ItemsFactory.createRedHerb());
+        POLICE_STATION.getRooms().get("office").getItemsInRoom().add(combat.ItemsFactory.createGreenHerb());
+        POLICE_STATION.getRooms().get("office").getItemsInRoom().add(combat.ItemsFactory.createShotgunMunition());
+        POLICE_STATION.getRooms().get("armory").getItemsInRoom().add(combat.ItemsFactory.createShotgunMunition());
+        POLICE_STATION.getRooms().get("armory").getItemsInRoom().add(combat.ItemsFactory.createShotgunMunition());
 
         // Setting ENEMIES
         GARDEN.getRooms().get("front garden").getEnemiesInRoom().add(characters.EnemiesFactory.createZombie());

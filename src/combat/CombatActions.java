@@ -22,8 +22,10 @@ public class CombatActions {
             }
             int newHp = player.getHp() - damage;
             player.setHp(newHp);
+            System.out.println();
             System.out.println(zombie.getName() + " uses " + attackName + " attack and deals "
                     + damage + " damage. Your HP: " + player.getHp());
+            System.out.println();
         }
     }
 
@@ -62,6 +64,7 @@ public class CombatActions {
             zombie.setHp(newHp);
             System.out.println("You hit the zombie with " + weapon.getName() + " for "
                     + weapon.getDamage() + " damage. Zombie HP: " + zombie.getHp());
+            System.out.println();
         }
     }
 
@@ -77,7 +80,7 @@ public class CombatActions {
                 break;
             case 1:
                 damage = weapon.getDamage();
-                shotType = "Chest shot";
+                shotType = "Chest shot!";
                 break;
             default:
                 damage = weapon.getDamage() / 2;
@@ -86,6 +89,7 @@ public class CombatActions {
         }
         int newHp = zombie.getHp() - damage;
         zombie.setHp(newHp);
+        System.out.println();
         System.out.println(shotType + " with " + weapon.getName() + " for "
                 + damage + " damage. Zombie HP: " + zombie.getHp());
     }
