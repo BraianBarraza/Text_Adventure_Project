@@ -1,7 +1,10 @@
 package config;
 
+import characters.EnemiesFactory;
 import characters.Enemy;
 import combat.Item;
+import combat.ItemsFactory;
+import combat.Weapon;
 import map.Places;
 import characters.Player;
 import combat.WeaponFactory;
@@ -99,6 +102,12 @@ public class Game {
                 System.out.println("Invalid option");
             }
         }
+
+        if (EnemiesFactory.MUTATION.getHp() == 0) {
+
+            GameStory.epilogue();
+            showPauseMenu();
+        }
     }
 
     private void replayOption() {
@@ -168,9 +177,9 @@ public class Game {
             }
         }
         if (!aliveEnemies.isEmpty()) {
-            if(aliveEnemies.size() == 1){
+            if (aliveEnemies.size() == 1) {
                 System.out.println("\n¡Oh Fuck! " + aliveEnemies.size() + " enemy heard me!");
-            }else{
+            } else {
                 System.out.println("\n¡Oh Fuck! " + aliveEnemies.size() + " enemies heard me!");
             }
             for (characters.Enemy.Zombie enemy : aliveEnemies) {
@@ -356,25 +365,37 @@ public class Game {
     }
 
     private void showPlayerStatus(Places currentPlace, Player player) {
-        System.out.println("Player HP: " + player.getHp());
+        System.out.println(player.getName());
+        System.out.println("HP: " + player.getHp());
+        System.out.println();
         System.out.println("Current place: " + currentPlace.getPlaceName());
+        System.out.println("Place info: " + currentPlace.getPlaceInformation());
+        System.out.println();
         if (currentPlace.getCurrentRoom() != null) {
             System.out.println("Room: " + currentPlace.getCurrentRoom().getName());
             System.out.println("Room info: " + currentPlace.getCurrentRoom().getDescription());
+            System.out.println();
         }
     }
 
     private void inventoryMenu(Player player) {
         Scanner sc = new Scanner(System.in);
+        System.out.println();
         this.player.showInventory();
+        System.out.println("Inventory Actions:");
+        System.out.println("i) Inventory Info");
+        System.out.println();
         System.out.println("a) Use Herb");
         System.out.println("b) Combine Herbs");
         System.out.println("c) Exit");
+        System.out.println();
         String choice = sc.nextLine().toLowerCase();
-        if (choice.equals("a")) {
+        if (choice.equalsIgnoreCase(("a")) || choice.equalsIgnoreCase("use Herb") || choice.equalsIgnoreCase("use")) {
             useHerb();
-        } else if (choice.equals("b")) {
+        } else if (choice.equalsIgnoreCase("b") || choice.equalsIgnoreCase("combine Herb") || choice.equalsIgnoreCase("combine")) {
             combineHerbs();
+        } else if (choice.equalsIgnoreCase("i") || choice.equalsIgnoreCase("info")) {
+            inventoryInfo();
         }
     }
 
@@ -403,18 +424,18 @@ public class Game {
         if (greenCount >= 1 && redCount >= 1) {
             removeHerb("Green Herb");
             removeHerb("Red Herb");
-            player.addHealingItem(new Item.HealingItem("Mixed Red+Green", 100, "Mixed Herb"));
-            System.out.println("You created a Mixed Herb (100 HP)");
+            player.addHealingItem(ItemsFactory.createSuperMixedHerb());
+            System.out.println("You create a: " + ItemsFactory.createSuperMixedHerb().getName() + " HP: " + ItemsFactory.createSuperMixedHerb().getHealingPoints() );
         } else if (redCount >= 2) {
             removeHerb("Red Herb");
             removeHerb("Red Herb");
-            player.addHealingItem(new Item.HealingItem("Mixed 2 Reds", 70, "Mixed Herb"));
-            System.out.println("You created a Mixed Herb (70 HP)");
+            player.addHealingItem(ItemsFactory.createNormalMixedHerb());
+            System.out.println("You create a :" + ItemsFactory.createNormalMixedHerb().getName() + " HP: " + ItemsFactory.createNormalMixedHerb().getHealingPoints());
         } else if (greenCount >= 2) {
             removeHerb("Green Herb");
             removeHerb("Green Herb");
-            player.addHealingItem(new Item.HealingItem("Mixed 2 Greens", 70, "Mixed Herb"));
-            System.out.println("You created a Mixed Herb (70 HP)");
+            player.addHealingItem(ItemsFactory.createNormalMixedHerb());
+            System.out.println("You create a :" + ItemsFactory.createNormalMixedHerb().getName() + " HP: " + ItemsFactory.createNormalMixedHerb().getHealingPoints());
         } else {
             System.out.println("Not enough herbs to combine");
         }
@@ -426,6 +447,25 @@ public class Game {
                 player.getInventoryHealingItems().remove(i);
                 return;
             }
+        }
+    }
+
+    private void inventoryInfo(){
+        System.out.println("Weapons:");
+        for (Weapon w : player.getInventoryWeapons()) {
+            System.out.println(" - " + w.getName() + " (DMG: " + w.getDamage() + " Description: " + w.getDescription()+")");
+        }
+        System.out.println("Ammunition:");
+        for (Item.Munition m : player.getInventoryMunition()) {
+            System.out.println(" - " + m.getName() + " (Quantity: " + m.getQuantity() + " Description: " + m.getDescription() + ")");
+        }
+        System.out.println("Healing Items:");
+        for (Item.HealingItem h : player.getInventoryHealingItems()) {
+            System.out.println(" - " + h.getName() + " (Heal: " + h.getHealingPoints()  + " Description: " + h.getDescription()+ ")");
+        }
+        System.out.println("Key Items:");
+        for (Item.KeyItem k : player.getInventoryKeys()) {
+            System.out.println(" - " + k.getName()  +" Description: "+  k.getDescription());
         }
     }
 }

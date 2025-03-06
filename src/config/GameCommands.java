@@ -10,11 +10,11 @@ public class GameCommands {
 
     public static Places move(Places currentPlace, Player player) {
         System.out.println("You are at the: " + currentPlace.getPlaceName());
-        System.out.println(currentPlace.getDescription());
+        System.out.println("Description: " + currentPlace.getDescription());
         System.out.println();
         if (currentPlace.getCurrentRoom() != null) {
             System.out.println("Current Room: " + currentPlace.getCurrentRoom().getName());
-            System.out.println(currentPlace.getCurrentRoom().getDescription());
+            System.out.println("Room description: " + currentPlace.getCurrentRoom().getDescription());
         }
         System.out.println();
 

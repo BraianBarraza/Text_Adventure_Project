@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import characters.EnemiesFactory;
 import characters.Npc;
 import characters.Enemy.Zombie;
 import combat.Item;
@@ -31,7 +32,7 @@ public enum Places {
 
     LOWER_MAIN_STREET("Lower Street",
             "A main street with smoke in the distance, A truck hit Ben Mears House and both are on fire \n" +
-                    "I cant go this way, gotta find another",
+                        "I cant keep going this way, gotta find another. I think theres a way through the Pub",
             "The street is dive in 2 parts the \"The MAIN LOWER STREET\" and the \"The MAIN STREET\" \n" +
                     "I live in the Lower Street, in the House next to me live the Beautiful Beverly Marsh but she is in Chester Mill right now, and Bill Denbrough is my front neighbor, \n" +
                     "He works direct in the pub next to his house, I should check if he is Ok", false, null),
@@ -232,7 +233,7 @@ public enum Places {
         POLICE_STATION.getRooms().get("office").getEnemiesInRoom().add(characters.EnemiesFactory.createPolice());
         POLICE_STATION.getRooms().get("office").getEnemiesInRoom().add(characters.EnemiesFactory.createZombie());
         //Final Fight
-        POLICE_STATION.getRooms().get("roof").getEnemiesInRoom().add(characters.EnemiesFactory.createMutation());
+        POLICE_STATION.getRooms().get("roof").getEnemiesInRoom().add(EnemiesFactory.MUTATION);
 
         // Setting NPCs
         HOUSE.getRooms().get("living room").setNpc(TV);

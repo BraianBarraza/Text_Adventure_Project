@@ -3,7 +3,6 @@ package config;
 import java.util.Scanner;
 
 public class PauseMenu {
-    static Scanner playerMenuChoice = new Scanner(System.in);
 
     public static void menuContinueCurrentGame() {
         System.out.println("Resuming current game...");
