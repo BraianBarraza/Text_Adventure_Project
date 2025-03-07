@@ -9,7 +9,16 @@ import combat.ItemsFactory;
 import java.io.*;
 import java.util.*;
 
+/**
+ * Provides methods to save and load the game state to and from a text file.
+ */
 public class GamePersistence {
+
+    /**
+     * Saves the current game state to a file.
+     * @param state the GameState containing the current place and player data
+     * @param filename the name of the file to save to
+     */
     public static void saveGame(GameState state, String filename) {
         try (PrintWriter writer = new PrintWriter(new FileWriter(filename))) {
             writer.println("currentPlace=" + state.getCurrentPlace().name());
@@ -59,6 +68,11 @@ public class GamePersistence {
         }
     }
 
+    /**
+     * Loads a previously saved game state from a file.
+     * @param filename the name of the file to read from
+     * @return a GameState object containing the loaded state, or null if an error occurred
+     */
     public static GameState loadGame(String filename) {
         Map<String, String> data = new HashMap<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
@@ -79,6 +93,7 @@ public class GamePersistence {
         Places currentPlace = Places.valueOf(currentPlaceStr);
         currentPlace.setCurrentRoom(currentPlace.getRooms().get(currentRoomStr));
         Player player = new Player("Larry Underwood", playerHP);
+
         String weaponsStr = data.get("weapons");
         if (weaponsStr != null && !weaponsStr.isEmpty()) {
             String[] weaponNames = weaponsStr.split(",");
@@ -95,6 +110,7 @@ public class GamePersistence {
                 }
             }
         }
+
         String healingStr = data.get("healingItems");
         if (healingStr != null && !healingStr.isEmpty()) {
             String[] healingNames = healingStr.split(",");
@@ -111,6 +127,7 @@ public class GamePersistence {
                 }
             }
         }
+
         String munitionStr = data.get("munition");
         if (munitionStr != null && !munitionStr.isEmpty()) {
             String[] munitions = munitionStr.split(";");
@@ -131,6 +148,7 @@ public class GamePersistence {
                 }
             }
         }
+
         String keysStr = data.get("keys");
         if (keysStr != null && !keysStr.isEmpty()) {
             String[] keyNames = keysStr.split(",");

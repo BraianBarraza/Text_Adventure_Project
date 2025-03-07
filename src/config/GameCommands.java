@@ -6,8 +6,21 @@ import combat.Item;
 
 import java.util.List;
 
+/**
+ * Handle movement commands in the game.
+ * Players can move to different rooms in the same place or exit to another place.
+ */
 public class GameCommands {
 
+    /**
+     * Moves the player to a specified room or exits to another place if available.
+     * It displays possible rooms and exits, processes the user's command,
+     * and updates the player's current place and room.
+     *
+     * @param currentPlace the place in which the player is
+     * @param player the player's character holding keys and inventory
+     * @return the updated place after moving
+     */
     public static Places move(Places currentPlace, Player player) {
         System.out.println("You are at the: " + currentPlace.getPlaceName());
         System.out.println("Description: " + currentPlace.getDescription());

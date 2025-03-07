@@ -4,15 +4,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import characters.EnemiesFactory;
 import characters.Npc;
 import characters.Enemy.Zombie;
 import combat.Item;
-
 import static characters.NpcFactory.*;
 import static combat.ItemsFactory.*;
 import static combat.WeaponFactory.*;
+
+/**
+ * Represents major locations (Places) in the game world, each containing multiple Rooms.
+ * Each enum constant holds its own name, description, info text, locked state, and a required key if locked.
+ */
 
 public enum Places {
 
@@ -192,13 +195,20 @@ public enum Places {
         GARAGE.getRooms().get("garage driveway").getItemsInRoom().add(combat.ItemsFactory.createRedHerb());
         GARAGE.getRooms().get("garage inside").getItemsInRoom().add(combat.ItemsFactory.createPistolMunition());
 
+        LOWER_MAIN_STREET.getRooms().get("block 2").getItemsInRoom().add(combat.ItemsFactory.createGreenHerb());
+
+        PUB.getRooms().get("toilets").getItemsInRoom().add(combat.ItemsFactory.createGreenHerb());
+
         BILLS_HOUSE.getRooms().get("living room").getItemsInRoom().add(ALLEY_KEY);
         BILLS_HOUSE.getRooms().get("living room").getItemsInRoom().add(combat.ItemsFactory.createPistolMunition());
         BILLS_HOUSE.getRooms().get("kitchen").getItemsInRoom().add(combat.ItemsFactory.createGreenHerb());
 
         ALLEY.getRooms().get("back alley").getItemsInRoom().add(combat.ItemsFactory.createRedHerb());
 
+        MAIN_STREET.getRooms().get("block 3").getItemsInRoom().add(combat.ItemsFactory.createPistolMunition());
+
         MOTEL.getRooms().get("room 1").getItemsInRoom().add(combat.ItemsFactory.createPistolMunition());
+        MOTEL.getRooms().get("room 2").getItemsInRoom().add(combat.ItemsFactory.createGreenHerb());
         MOTEL.getRooms().get("room 2").getItemsInRoom().add(combat.ItemsFactory.createGreenHerb());
         MOTEL.getRooms().get("room 3").getItemsInRoom().add(SHOTGUN);
         MOTEL.getRooms().get("room 3").getItemsInRoom().add(combat.ItemsFactory.createShotgunMunition());
@@ -210,6 +220,8 @@ public enum Places {
         POLICE_STATION.getRooms().get("office").getItemsInRoom().add(combat.ItemsFactory.createShotgunMunition());
         POLICE_STATION.getRooms().get("armory").getItemsInRoom().add(combat.ItemsFactory.createShotgunMunition());
         POLICE_STATION.getRooms().get("armory").getItemsInRoom().add(combat.ItemsFactory.createShotgunMunition());
+        POLICE_STATION.getRooms().get("armory").getItemsInRoom().add(combat.ItemsFactory.createPistolMunition());
+        POLICE_STATION.getRooms().get("armory").getItemsInRoom().add(combat.ItemsFactory.createPistolMunition());
 
         // Setting ENEMIES
         GARDEN.getRooms().get("front garden").getEnemiesInRoom().add(characters.EnemiesFactory.createZombie());
@@ -302,6 +314,11 @@ public enum Places {
         this.currentRoom = currentRoom;
     }
 
+    /**
+     * collect the list of connections leading from a specific room to other places and rooms.
+     * @param roomName the name of the room in this place
+     * @return a list of Connection objects
+     */
     public List<Connection> getConnectionsFrom(String roomName) {
         return connectionsByRoom.getOrDefault(roomName, new ArrayList<>());
     }
@@ -325,7 +342,7 @@ public enum Places {
     }
 
     /**
-     * Inner class to represent a connection from a specific room in this place
+     * represents a connection from a specific room in this place
      * to another Place (and a specific room in that other Place).
      */
     public static class Connection {
@@ -336,16 +353,24 @@ public enum Places {
             this.destinationPlace = destinationPlace;
             this.destinationRoomName = destinationRoomName;
         }
-
+        /**
+         * @return the target place
+         */
         public Places getDestinationPlace() {
             return destinationPlace;
         }
 
+        /**
+         * @return the name of the target room in the destination place
+         */
         public String getDestinationRoomName() {
             return destinationRoomName;
         }
     }
 
+    /**
+     * A Room represents a subdivision of a Place where items, enemies, and NPCs can be added.
+     */
     public static class Room {
         private String name;
         private String description;

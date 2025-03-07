@@ -7,14 +7,21 @@ import combat.Weapon;
 import map.Places;
 import characters.Player;
 import combat.WeaponFactory;
+
 import java.util.List;
 
+/**
+ * Manages how the game runs, including the main menu, gameplay loop, and transitions between states.
+ */
 public class Game {
     private boolean gameStarted;
     private boolean running;
     private Places currentPlace;
     private Player player;
 
+    /**
+     * Initializes and starts the game loop, displays the main menu and reacts to the user input.
+     */
     public void startGame() {
         running = true;
         while (running) {
@@ -66,6 +73,10 @@ public class Game {
         gameLoop();
     }
 
+    /**
+     * Manages gameplay loop where the player interacts with the world.
+     * The loop ends if the player dies or is extracted.
+     */
     private void gameLoop() {
         boolean inGame = true;
         while (inGame) {
@@ -98,12 +109,11 @@ public class Game {
             }
         }
 
-        if (EnemiesFactory.MUTATION.getHp() == 0) {
-            GameStory.epilogue();
-            replayOption();
-        }
     }
 
+    /**
+     * Asks if the player wants to replay after losing or completing the game.
+     */
     private void replayOption() {
         if (InputHandler.askYesNo("Do you want to replay?")) {
             startNewGame();
@@ -142,7 +152,7 @@ public class Game {
                     inPause = false;
                     break;
                 case "5":
-                    PauseMenu.exitWithoutExit();
+                    PauseMenu.exitWithoutSaving();
                     break;
                 default:
                     System.out.println("Invalid option. Try again.");
@@ -150,12 +160,24 @@ public class Game {
         }
     }
 
+    /**
+     * Restores a saved game state into the current session.
+     *
+     * @param state the loaded GameState
+     */
     private void restoreGameState(GameState state) {
         this.currentPlace = state.getCurrentPlace();
         this.player = state.getPlayer();
         System.out.println("Game state restored.");
     }
 
+    /**
+     * Searches the current room for items, NPCs, or enemies.
+     * Initiates combat if there are enemies in the room.
+     *
+     * @param currentPlace the current location in the game
+     * @param player       Larry
+     */
     private void searchRoom(Places currentPlace, Player player) {
         Places.Room r = currentPlace.getCurrentRoom();
         List<Enemy.Zombie> aliveEnemies = new java.util.ArrayList<>();
@@ -211,6 +233,11 @@ public class Game {
         }
     }
 
+    /**
+     * Initiates and control the combat against one or more enemies.
+     *
+     * @param enemies the list of enemies in the room
+     */
     private void startCombat(List<Enemy.Zombie> enemies) {
         combat.CombatActions actions = new combat.CombatActions();
 
@@ -283,9 +310,18 @@ public class Game {
                     }
                 }
             }
+            if (EnemiesFactory.MUTATION.getHp() <= 0) {
+                GameStory.epilogue();
+                replayOption();
+            }
         }
     }
 
+    /**
+     * Lets the player select a weapon from their inventory to use in combat.
+     *
+     * @return the chosen Weapon, or null if invalid input
+     */
     private Weapon chooseWeapon() {
         List<Weapon> weapons = player.getInventoryWeapons();
         if (weapons.isEmpty()) {
@@ -311,6 +347,12 @@ public class Game {
         return null;
     }
 
+    /**
+     * Shows the player's current status including HP, location, and room information.
+     *
+     * @param currentPlace the current place in the game
+     * @param player       the player's character
+     */
     private void showPlayerStatus(Places currentPlace, Player player) {
         System.out.println(player.getName());
         System.out.println("HP: " + player.getHp());
@@ -325,6 +367,11 @@ public class Game {
         }
     }
 
+    /**
+     * Displays and handles the player's inventory menu.
+     *
+     * @param player Larry
+     */
     private void inventoryMenu(Player player) {
         System.out.println();
         this.player.showInventory();
@@ -345,6 +392,9 @@ public class Game {
         }
     }
 
+    /**
+     * Uses the first healing item in the inventory.
+     */
     private void useHerb() {
         if (!player.getInventoryHealingItems().isEmpty()) {
             int heal = player.getInventoryHealingItems().get(0).getHealingPoints();
@@ -357,6 +407,9 @@ public class Game {
         }
     }
 
+    /**
+     * Shows information about the player inventory.
+     */
     private void inventoryInfo() {
         System.out.println("Weapons:");
         for (Weapon w : player.getInventoryWeapons()) {

@@ -5,8 +5,16 @@ import java.util.Random;
 import characters.Enemy.Zombie;
 import characters.Player;
 
+/**
+ * Handles the logic for combat encounters, including attacks for both the player and enemies.
+ */
 public class CombatActions {
 
+    /**
+     * Makes a zombie attack the player, choosing either a bite (100% damage) or a claw (50% damage).
+     * @param player the Player being attacked
+     * @param zombie the attacking Zombie
+     */
     public void zombieAttack(Player player, Zombie zombie) {
         if (player.getHp() > 0) {
             Random r = new Random();
@@ -14,10 +22,10 @@ public class CombatActions {
             int damage;
             String attackName;
             if (attackType == 0) {
-                damage = zombie.getDamage(); // 100% of base damage
+                damage = zombie.getDamage();
                 attackName = "Bite";
             } else {
-                damage = zombie.getDamage() / 2; // 50% of base damage
+                damage = zombie.getDamage() / 2;
                 attackName = "Claw";
             }
             int newHp = player.getHp() - damage;
@@ -30,11 +38,11 @@ public class CombatActions {
     }
 
     /**
-     * Player attack: check if the zombie is alive, check the weapon to use, and if it needs ammo, and do the ammo math.
-     *
-     * @param player
-     * @param zombie
-     * @param weapon
+     * Handles the player's attack on a single zombie using the chosen weapon.
+     * Verifies if the weapon requires ammunition and consumes it if available.
+     * @param player the Player who is attacking
+     * @param zombie the Zombie being attacked
+     * @param weapon the Weapon chosen for the attack
      */
     public void playerAttack(Player player, Zombie zombie, Weapon weapon) {
         if (zombie.getHp() <= 0) {
@@ -59,7 +67,6 @@ public class CombatActions {
             player.consumeAmmo(requiredAmmoName);
             applyRandomShot(zombie, weapon);
         } else {
-            // Melee weapons or fists apply base damage directly
             int newHp = zombie.getHp() - weapon.getDamage();
             zombie.setHp(newHp);
             System.out.println("You hit the zombie with " + weapon.getName() + " for "
@@ -68,6 +75,11 @@ public class CombatActions {
         }
     }
 
+    /**
+     * Applies a random shot type when using a fire gub (headshot, chest shot, or leg shot) and calculates damage.
+     * @param zombie the Zombie being shot
+     * @param weapon the fire gun used
+     */
     private void applyRandomShot(Zombie zombie, Weapon weapon) {
         Random r = new Random();
         int roll = r.nextInt(3); // 0: head, 1: chest, 2: legs

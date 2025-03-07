@@ -14,7 +14,7 @@ public class PauseMenu {
         return GamePersistence.loadGame("gamestate.txt");
     }
 
-    public static void exitWithoutExit() {
+    public static void exitWithoutSaving() {
         if (InputHandler.askYesNo("Are you sure you want to exit without saving?")) {
             System.out.println("Exiting game without saving. Goodbye!");
             System.exit(0);
