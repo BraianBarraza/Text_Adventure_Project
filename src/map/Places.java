@@ -184,7 +184,7 @@ public enum Places {
         MOTEL.connectPlaces("parking lot", MAIN_STREET, "block 3");
 
         MAIN_STREET.connectPlaces("block 4", POLICE_STATION, "entrance");
-        POLICE_STATION.connectPlaces("entrance", MAIN_STREET, "Block 4");
+        POLICE_STATION.connectPlaces("entrance", MAIN_STREET, "block 4");
 
         // Setting ITEMS
         HOUSE.getRooms().get("kitchen").getItemsInRoom().add(combat.ItemsFactory.createPistolMunition());
@@ -206,6 +206,7 @@ public enum Places {
         ALLEY.getRooms().get("back alley").getItemsInRoom().add(combat.ItemsFactory.createRedHerb());
 
         MAIN_STREET.getRooms().get("block 3").getItemsInRoom().add(combat.ItemsFactory.createPistolMunition());
+        MAIN_STREET.getRooms().get("block 4").getItemsInRoom().add(combat.ItemsFactory.createPistolMunition());
 
         MOTEL.getRooms().get("room 1").getItemsInRoom().add(combat.ItemsFactory.createPistolMunition());
         MOTEL.getRooms().get("room 2").getItemsInRoom().add(combat.ItemsFactory.createGreenHerb());
