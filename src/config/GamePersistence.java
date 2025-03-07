@@ -51,6 +51,9 @@ public class GamePersistence {
                 }
             }
             writer.println();
+            System.out.println("Game saved successfully");
+            System.out.println("Warning: it can take a couple of minutes until the gamestate.txt archive is visible");
+            System.out.println();
         } catch (IOException e) {
             System.out.println("Error saving game: " + e.getMessage());
         }
@@ -83,7 +86,7 @@ public class GamePersistence {
                 wn = wn.trim();
                 if (wn.equalsIgnoreCase("Fist")) {
                     player.addWeaponToInventory(WeaponFactory.FIST);
-                } else if (wn.equalsIgnoreCase("Knive") || wn.equalsIgnoreCase("Knife")) {
+                } else if (wn.equalsIgnoreCase("Knife")) {
                     player.addWeaponToInventory(WeaponFactory.KNIFE);
                 } else if (wn.equalsIgnoreCase("Pistol")) {
                     player.addWeaponToInventory(WeaponFactory.PISTOL);
@@ -142,6 +145,9 @@ public class GamePersistence {
                 }
             }
         }
+        System.out.println();
+        System.out.println("Game loaded");
+        System.out.println();
         return new GameState(currentPlace, player);
     }
 }

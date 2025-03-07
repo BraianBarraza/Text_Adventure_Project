@@ -3,14 +3,11 @@ package config;
 import characters.EnemiesFactory;
 import characters.Enemy;
 import combat.Item;
-import combat.ItemsFactory;
 import combat.Weapon;
 import map.Places;
 import characters.Player;
 import combat.WeaponFactory;
-
 import java.util.List;
-import java.util.Scanner;
 
 public class Game {
     private boolean gameStarted;
@@ -22,8 +19,7 @@ public class Game {
         running = true;
         while (running) {
             showMainMenu();
-            Scanner sc = new Scanner(System.in);
-            String choice = sc.nextLine().toLowerCase();
+            String choice = InputHandler.getInput().toLowerCase();
             if (choice.equals("1") || choice.equals("start")) {
                 startNewGame();
             } else if (choice.equals("2") || choice.equals("load")) {
@@ -71,7 +67,6 @@ public class Game {
     }
 
     private void gameLoop() {
-        Scanner sc = new Scanner(System.in);
         boolean inGame = true;
         while (inGame) {
             if (player.getHp() <= 0) {
@@ -86,7 +81,7 @@ public class Game {
             System.out.println("4. Inventory");
             System.out.println("5. Pause Menu");
             System.out.println("what would you like to do?");
-            String input = sc.nextLine();
+            String input = InputHandler.getInput().toLowerCase();
 
             if (input.equals("1") || input.equalsIgnoreCase("move")) {
                 currentPlace = GameCommands.move(currentPlace, player);
@@ -104,17 +99,13 @@ public class Game {
         }
 
         if (EnemiesFactory.MUTATION.getHp() == 0) {
-
             GameStory.epilogue();
-            showPauseMenu();
+            replayOption();
         }
     }
 
     private void replayOption() {
-        System.out.println("Do you want to replay? (y/n)");
-        Scanner sc = new Scanner(System.in);
-        String choice = sc.nextLine().toLowerCase();
-        if (choice.equals("y")) {
+        if (InputHandler.askYesNo("Do you want to replay?")) {
             startNewGame();
         } else {
             running = false;
@@ -122,7 +113,6 @@ public class Game {
     }
 
     private void showPauseMenu() {
-        Scanner sc = new Scanner(System.in);
         boolean inPause = true;
         while (inPause) {
             System.out.println("\nPause Menu");
@@ -132,7 +122,7 @@ public class Game {
             System.out.println("4. Start New Game");
             System.out.println("5. Exit Without Saving");
             System.out.print("Choose an option: ");
-            String option = sc.nextLine().toLowerCase();
+            String option = InputHandler.getInput().toLowerCase();
             switch (option) {
                 case "1":
                     PauseMenu.menuContinueCurrentGame();
@@ -168,10 +158,8 @@ public class Game {
 
     private void searchRoom(Places currentPlace, Player player) {
         Places.Room r = currentPlace.getCurrentRoom();
-        Scanner sc = new Scanner(System.in);
-
         List<Enemy.Zombie> aliveEnemies = new java.util.ArrayList<>();
-        for (characters.Enemy.Zombie z : r.getEnemiesInRoom()) {
+        for (Enemy.Zombie z : r.getEnemiesInRoom()) {
             if (z.getHp() > 0) {
                 aliveEnemies.add(z);
             }
@@ -182,7 +170,7 @@ public class Game {
             } else {
                 System.out.println("\n¡Oh Fuck! " + aliveEnemies.size() + " enemies heard me!");
             }
-            for (characters.Enemy.Zombie enemy : aliveEnemies) {
+            for (Enemy.Zombie enemy : aliveEnemies) {
                 System.out.println(" - " + enemy.getName());
             }
             startCombat(aliveEnemies);
@@ -191,15 +179,7 @@ public class Game {
         }
 
         if (r.getNpc() != null) {
-            System.out.println(r.getNpc().getName() + " is here");
-            System.out.println("Do you want to interact ? y/n");
-            String response = sc.nextLine();
-
-            while (!response.equalsIgnoreCase("y") && (!response.equalsIgnoreCase("n"))) {
-                System.out.println("Invalid Answer. Do you want to interact ? y/n");
-                response = sc.nextLine();
-            }
-            if (response.equalsIgnoreCase("y")) {
+            if (InputHandler.askYesNo(r.getNpc().getName() + " is here. Do you want to interact?")) {
                 System.out.println(r.getNpc().getDialogue());
                 if (!r.getNpc().hasGivenKey() && r.getNpc().getKey() != null) {
                     Item.KeyItem key = (Item.KeyItem) r.getNpc().getKey();
@@ -213,41 +193,15 @@ public class Game {
 
         if (!r.getItemsInRoom().isEmpty()) {
             System.out.println("\nNice, I found:");
-
             for (Item item : r.getItemsInRoom()) {
                 System.out.println(" - " + item.getName());
             }
-
-            System.out.println("\nIt could be useful, should keep it.");
-            System.out.print("Do you want to save items in inventory? (Y/N): ");
-
-            String response = sc.nextLine().trim().toLowerCase();
-
-            while (!response.equals("y") && !response.equals("n")) {
-                System.out.print("Invalid response. Please enter Y or N: ");
-                response = sc.nextLine().trim().toLowerCase();
-            }
-
-            if (response.equals("y")) {
+            if (InputHandler.askYesNo("\nIt could be useful. Do you want to save items in inventory?")) {
                 List<Item> foundItems = new java.util.ArrayList<>(r.getItemsInRoom());
-
                 for (Item i : foundItems) {
-                    if (i instanceof Item.HealingItem) {
-                        Item.HealingItem herb = (Item.HealingItem) i;
-                        player.addHealingItem(new Item.HealingItem(herb.getName(), herb.getHealingPoints(), herb.getDescription()));
-                    } else if (i instanceof Item.Munition) {
-                        Item.Munition ammo = (Item.Munition) i;
-                        player.addMunition(new Item.Munition(ammo.getName(), ammo.getQuantity(), ammo.getDescription()));
-                    } else if (i instanceof Item.KeyItem) {
-                        Item.KeyItem key = (Item.KeyItem) i;
-                        player.addKeyItem(new Item.KeyItem(key.getName(), key.getDescription()));
-                    } else if (i instanceof combat.Weapon) {
-                        combat.Weapon w = (combat.Weapon) i;
-                        player.addWeaponToInventory(new combat.Weapon(w.getName(), w.getDamage(), w.getDescription()));
-                    }
+                    player.pickUpItem(i);
                     r.getItemsInRoom().remove(i);
                 }
-
                 System.out.println("\nAll items have been stored in your inventory.");
             } else {
                 System.out.println("\nYou decided to leave the items in the room.");
@@ -257,9 +211,8 @@ public class Game {
         }
     }
 
-    private void startCombat(List<characters.Enemy.Zombie> enemies) {
+    private void startCombat(List<Enemy.Zombie> enemies) {
         combat.CombatActions actions = new combat.CombatActions();
-        Scanner sc = new Scanner(System.in);
 
         while (true) {
             if (player.getHp() <= 0) {
@@ -267,7 +220,7 @@ public class Game {
                 return;
             }
             boolean allDead = true;
-            for (characters.Enemy.Zombie z : enemies) {
+            for (Enemy.Zombie z : enemies) {
                 if (z.getHp() > 0) {
                     allDead = false;
                     break;
@@ -277,23 +230,21 @@ public class Game {
                 System.out.println("I killed them. I better keep moving");
                 return;
             }
-
             System.out.println("Your HP: " + player.getHp());
             int count = 1;
-            for (characters.Enemy.Zombie z : enemies) {
+            for (Enemy.Zombie z : enemies) {
                 System.out.println(count + ") " + z.getName() + " (HP: " + z.getHp() + ")");
                 count++;
             }
-
             boolean validTurn = false;
             while (!validTurn) {
                 System.out.println("Choose an action:");
                 System.out.println("a) Attack");
                 System.out.println("b) Use Herb");
-                String choice = sc.nextLine().toLowerCase();
+                String choice = InputHandler.getInput().toLowerCase();
                 if (choice.equals("a")) {
                     System.out.println("Which enemy?");
-                    String num = sc.nextLine();
+                    String num = InputHandler.getInput();
                     int idx;
                     try {
                         idx = Integer.parseInt(num) - 1;
@@ -305,12 +256,12 @@ public class Game {
                         System.out.println("Invalid choice.");
                         continue;
                     }
-                    characters.Enemy.Zombie target = enemies.get(idx);
+                    Enemy.Zombie target = enemies.get(idx);
                     if (target.getHp() <= 0) {
                         System.out.println("That zombie is already dead.");
                         continue;
                     }
-                    combat.Weapon chosenWeapon = chooseWeapon();
+                    Weapon chosenWeapon = chooseWeapon();
                     if (chosenWeapon != null) {
                         actions.playerAttack(player, target, chosenWeapon);
                         validTurn = true;
@@ -324,8 +275,7 @@ public class Game {
                     System.out.println("Invalid action. Please choose a valid option.");
                 }
             }
-
-            for (characters.Enemy.Zombie z : enemies) {
+            for (Enemy.Zombie z : enemies) {
                 if (z.getHp() > 0 && player.getHp() > 0) {
                     actions.zombieAttack(player, z);
                     if (player.getHp() <= 0) {
@@ -336,21 +286,18 @@ public class Game {
         }
     }
 
-    private combat.Weapon chooseWeapon() {
-        Scanner sc = new Scanner(System.in);
-        List<combat.Weapon> weapons = player.getInventoryWeapons();
+    private Weapon chooseWeapon() {
+        List<Weapon> weapons = player.getInventoryWeapons();
         if (weapons.isEmpty()) {
             System.out.println("You have no weapons.");
             return null;
         }
-
         System.out.println("Choose a weapon by number:");
         for (int i = 0; i < weapons.size(); i++) {
-            combat.Weapon w = weapons.get(i);
+            Weapon w = weapons.get(i);
             System.out.println((i + 1) + ") " + w.getName() + " (Base Damage: " + w.getDamage() + ")");
         }
-
-        String input = sc.nextLine();
+        String input = InputHandler.getInput();
         try {
             int idx = Integer.parseInt(input) - 1;
             if (idx >= 0 && idx < weapons.size()) {
@@ -379,7 +326,6 @@ public class Game {
     }
 
     private void inventoryMenu(Player player) {
-        Scanner sc = new Scanner(System.in);
         System.out.println();
         this.player.showInventory();
         System.out.println("Inventory Actions:");
@@ -389,12 +335,12 @@ public class Game {
         System.out.println("b) Combine Herbs");
         System.out.println("c) Exit");
         System.out.println();
-        String choice = sc.nextLine().toLowerCase();
-        if (choice.equalsIgnoreCase(("a")) || choice.equalsIgnoreCase("use Herb") || choice.equalsIgnoreCase("use")) {
+        String choice = InputHandler.getInput().toLowerCase();
+        if (choice.equals("a") || choice.equals("use herb") || choice.equals("use")) {
             useHerb();
-        } else if (choice.equalsIgnoreCase("b") || choice.equalsIgnoreCase("combine Herb") || choice.equalsIgnoreCase("combine")) {
-            combineHerbs();
-        } else if (choice.equalsIgnoreCase("i") || choice.equalsIgnoreCase("info")) {
+        } else if (choice.equals("b") || choice.equals("combine herb") || choice.equals("combine")) {
+            player.combineHerbs();
+        } else if (choice.equals("i") || choice.equals("info")) {
             inventoryInfo();
         }
     }
@@ -411,61 +357,25 @@ public class Game {
         }
     }
 
-    private void combineHerbs() {
-        int greenCount = 0;
-        int redCount = 0;
-        for (Item.HealingItem h : player.getInventoryHealingItems()) {
-            if (h.getName().equalsIgnoreCase("Green Herb")) {
-                greenCount++;
-            } else if (h.getName().equalsIgnoreCase("Red Herb")) {
-                redCount++;
-            }
-        }
-        if (greenCount >= 1 && redCount >= 1) {
-            removeHerb("Green Herb");
-            removeHerb("Red Herb");
-            player.addHealingItem(ItemsFactory.createSuperMixedHerb());
-            System.out.println("You create a: " + ItemsFactory.createSuperMixedHerb().getName() + " HP: " + ItemsFactory.createSuperMixedHerb().getHealingPoints());
-        } else if (redCount >= 2) {
-            removeHerb("Red Herb");
-            removeHerb("Red Herb");
-            player.addHealingItem(ItemsFactory.createNormalMixedHerb());
-            System.out.println("You create a :" + ItemsFactory.createNormalMixedHerb().getName() + " HP: " + ItemsFactory.createNormalMixedHerb().getHealingPoints());
-        } else if (greenCount >= 2) {
-            removeHerb("Green Herb");
-            removeHerb("Green Herb");
-            player.addHealingItem(ItemsFactory.createNormalMixedHerb());
-            System.out.println("You create a :" + ItemsFactory.createNormalMixedHerb().getName() + " HP: " + ItemsFactory.createNormalMixedHerb().getHealingPoints());
-        } else {
-            System.out.println("Not enough herbs to combine");
-        }
-    }
-
-    private void removeHerb(String herbName) {
-        for (int i = 0; i < player.getInventoryHealingItems().size(); i++) {
-            if (player.getInventoryHealingItems().get(i).getName().equalsIgnoreCase(herbName)) {
-                player.getInventoryHealingItems().remove(i);
-                return;
-            }
-        }
-    }
-
-    private void inventoryInfo(){
+    private void inventoryInfo() {
         System.out.println("Weapons:");
         for (Weapon w : player.getInventoryWeapons()) {
-            System.out.println(" - " + w.getName() + " (DMG: " + w.getDamage() + " Description: " + w.getDescription()+")");
+            System.out.println(" - " + w.getName() + " (, DMG: " + w.getDamage()
+                    + ", Description: " + w.getDescription() + ")");
         }
         System.out.println("Ammunition:");
         for (Item.Munition m : player.getInventoryMunition()) {
-            System.out.println(" - " + m.getName() + " (Quantity: " + m.getQuantity() + " Description: " + m.getDescription() + ")");
+            System.out.println(" - " + m.getName() + " (, Quantity: " + m.getQuantity()
+                    + ", Description: " + m.getDescription() + ")");
         }
         System.out.println("Healing Items:");
         for (Item.HealingItem h : player.getInventoryHealingItems()) {
-            System.out.println(" - " + h.getName() + " (Heal: " + h.getHealingPoints()  + " Description: " + h.getDescription()+ ")");
+            System.out.println(" - " + h.getName() + " (Heal: " + h.getHealingPoints()
+                    + ", Description: " + h.getDescription() + ")");
         }
         System.out.println("Key Items:");
         for (Item.KeyItem k : player.getInventoryKeys()) {
-            System.out.println(" - " + k.getName()  +" Description: "+  k.getDescription());
+            System.out.println(" - " + k.getName() + ", Description: " + k.getDescription());
         }
     }
 }

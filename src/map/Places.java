@@ -18,12 +18,15 @@ public enum Places {
 
     HOUSE("House",
             "A small house with a garden exit",
-            "I can watch the News in the Living room, " +
-                    "and look if I find something useful in the kitchen or in my sleeping room", false, null),
+            "The House has three rooms: a living room (exit to the front garden), a kitchen, and a sleeping room.\n" +
+                    " Try searching them for supplies or checking the TV in the living room for updates.",
+            false, null),
 
     GARAGE("Garage",
             "My bike is here it is a shame that a I cannot use it to escape from here",
-            "Good that I had some munition here", false, null),
+            "The Garden has two sections: the side garden (exit to the garage driveway)\n" +
+                    " and the front garden (exit to the House's living room). You can also reach the Lower Street from the front garden.",
+            false, null),
 
     GARDEN("Garden",
             "A quiet garden",
@@ -31,40 +34,46 @@ public enum Places {
             false, null),
 
     LOWER_MAIN_STREET("Lower Street",
-            "A main street with smoke in the distance, A truck hit Ben Mears House and both are on fire \n" +
+            "The Lower Main Street theres smoke on the horizon. A truck crashed into Ben Mears' house, both now ablaze, filling the air with choking fumes. \n" +
                         "I cant keep going this way, gotta find another. I think theres a way through the Pub",
-            "The street is dive in 2 parts the \"The MAIN LOWER STREET\" and the \"The MAIN STREET\" \n" +
+            "The Main Street is dive in 2 parts the \"The MAIN LOWER STREET\" and the \"The MAIN STREET\" \n" +
+                    "The Lower Street has two blocks: block 1 (exits to the Garden and Bill's House) and block 2 (leading to the Pub)\n" +
                     "I live in the Lower Street, in the House next to me live the Beautiful Beverly Marsh but she is in Chester Mill right now, and Bill Denbrough is my front neighbor, \n" +
                     "He works direct in the pub next to his house, I should check if he is Ok", false, null),
 
     MAIN_STREET("Main Street",
-            "A main street with smoke in the distance",
-            "",
+            "A main street with smoke in the other part, now I can keep going",
+            "Main Street has two blocks: block 3 (exits to the Alley and the Motel parking lot) and \n" +
+                    "block 4 (exit to the Police Station). Danger lurks behind every vehicle",
             false, null),
 
     BILLS_HOUSE("Bills House",
             "A locked house that belongs to Bill",
-            "",
+            "Bill's House has a living room (exit to block 1 of Lower Street), a kitchen, and a bedroom. \n" +
+                    "It's locked, so I'll need the right key to enter",
             true, BILLS_KEY),
 
     PUB("Pub",
-            "A local pub that might have supplies",
-            "",
+            "A local pub, Bill Denbrough is the owner and the first friend I made in Castle Rock town",
+            "The Pub has three rooms: the main room (exit to block 2 of Lower Street), the bar counter (exit to the back alley), \n" +
+                    "and toilets",
             false, null),
 
     ALLEY("Alley",
-            "A small alley leading to another street",
-            "",
+            "A narrow passage filled with trash and graffitis, there use to be a lot of dog who ate it",
+            "The Alley has two parts: the back alley (exit to the pub's bar counter) and the side alley (exit to block 3 of Main Street).",
             true, ALLEY_KEY),
 
     POLICE_STATION("Police Station",
-            "A station that might have some weapon",
-            "",
+            "The Police Station, this is the place of the extraction I can hear the Helicopter approaching, I have to hurry up ",
+            "The Police Station has four areas: the entrance (exit to block 4 of Main Street), an office, \n" +
+                    "an armory, and the roof. I have to clear it for the extraction.",
             true, STATIONS_KEY),
 
     MOTEL("Motel",
-            "The Motel from the town, I gotta see if Carrie White is Ok",
-            "",
+            "The Motel from the town, theres blood all around the place something terrible happened here!",
+            "The Motel has a parking lot (exit to block 3 of Main Street), a reception desk, and four rooms (1–4). \n" +
+                    "Carrie White may be somewhere inside, needing help.",
             false, null);
 
     private final String placeName;
@@ -96,47 +105,50 @@ public enum Places {
                 "I should look for the munition that I left in the GARAGE");
 
         // GARDEN
-        GARDEN.addRoom("side garden", "");
-        GARDEN.addRoom("front garden", "");
+        GARDEN.addRoom("side garden", "A narrow strip overshadowed by a high fence. The garage driveway is just beyond.");
+        GARDEN.addRoom("front garden", "Patchy grass and a crooked mailbox near the street. Despite the chaos, a few flowers still bloom");
 
         // GARAGE
-        GARAGE.addRoom("garage driveway", "");
-        GARAGE.addRoom("garage inside", "");
+        GARAGE.addRoom("garage driveway", "A short concrete slope with oil stains marking where a car once stood.");
+        GARAGE.addRoom("garage inside", "Stacks of boxes, tools, and half-finished repair projects. The smell of gasoline is intense.");
 
         // LOWER STREET
-        LOWER_MAIN_STREET.addRoom("block 1", "block 1/4");
-        LOWER_MAIN_STREET.addRoom("block 2", "block 2/4");
+        LOWER_MAIN_STREET.addRoom("block 1", "block 1/4 The pavement is cracked, and smoke curls in the air from nearby fires.");
+        LOWER_MAIN_STREET.addRoom("block 2", "block 2/4 its pretty hot here I am almost in front of the fire");
 
         // PUB
-        PUB.addRoom("main room", "A large room with tables and chairs");
-        PUB.addRoom("bar counter", "A counter where the bartender stands");
-        PUB.addRoom("toilets", "Dimly lit toilets");
+        PUB.addRoom("main room", "A large room with tables and chairs, theres chaos all around, it looks like there was a fight here");
+        PUB.addRoom("bar counter", "A counter where the bartender stands, bottles smashed all around. the sour smell of alcohol rises here");
+        PUB.addRoom("toilets", "Dimly lit toilets, the mirrors are broken theres watter and blood in the floor");
 
         // BILL'S HOUSE (locked)
-        BILLS_HOUSE.addRoom("living room", "Bill's living room");
-        BILLS_HOUSE.addRoom("kitchen", "Bill's kitchen");
-        BILLS_HOUSE.addRoom("bedroom", "Bill's bedroom");
+        BILLS_HOUSE.addRoom("living room", "Bill's living room, somebody was here. the table is broken and someone threw everything to the floor!");
+        BILLS_HOUSE.addRoom("kitchen", "Bill's kitchen, A small table stands overturned, and the fridge door hangs open, may be was Georgi");
+        BILLS_HOUSE.addRoom("bedroom", "Bill's bedroom, A flickering radio on the nightstand emits static and faint voices.\n" +
+                "may be Bill used it to communicate with his little brother, fuck they were so close");
 
         // ALLEY (locked)
-        ALLEY.addRoom("back alley", "A dead end with garbage");
-        ALLEY.addRoom("side alley", "A narrow way out to the other part of the street");
+        ALLEY.addRoom("back alley", "A dead end with a lot of garbage, there are dead rats all around, something ate them.");
+        ALLEY.addRoom("side alley", "A narrow way out to the other part of the street, more dead rats and blood \n" +
+                "I can smell dead bodies all around, theres no air in here");
 
         // MAIN STREET
-        MAIN_STREET.addRoom("block 3", "block 3/4");
+        MAIN_STREET.addRoom("block 3", "block 3/4 here is the truck on fire again, I can see the body of the driver from here");
         MAIN_STREET.addRoom("block 4", "block 4/4 there was a big crash at the avenue, it is impossible to go out of this street");
 
         // MOTEL
-        MOTEL.addRoom("parking lot", "");
-        MOTEL.addRoom("reception", "");
-        MOTEL.addRoom("room 1", "");
-        MOTEL.addRoom("room 2", "");
-        MOTEL.addRoom("room 3", "");
-        MOTEL.addRoom("room 4", "");
+        MOTEL.addRoom("parking lot", "A lot of blood all around here, there was a carnage");
+        MOTEL.addRoom("reception", "A dusty reception desk with a bell. The neon light flickers overhead my head");
+        MOTEL.addRoom("room 1", "Blood all around");
+        MOTEL.addRoom("room 2", "Blood all around");
+        MOTEL.addRoom("room 3", "The Sheriff took his wife Sarah inside here, probably he tried to kill her but he didnt, \n" +
+                "what a terrible situation");
+        MOTEL.addRoom("room 4", "Blood all around");
 
         // POLICE STATION (locked)
         POLICE_STATION.addRoom("entrance", "The station entrance");
-        POLICE_STATION.addRoom("office", "An office with papers everywhere");
-        POLICE_STATION.addRoom("armory", "An armory that might contain weapons");
+        POLICE_STATION.addRoom("office", "An office with papers everywhere, they went out so suddenly and let everything made a mess");
+        POLICE_STATION.addRoom("armory", "They took all the guns but theres still some munition around");
         POLICE_STATION.addRoom("roof", "The Police Station roof perfect for some air landing");
 
 

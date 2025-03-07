@@ -3,8 +3,8 @@ package config;
 import map.Places;
 import characters.Player;
 import combat.Item;
+
 import java.util.List;
-import java.util.Scanner;
 
 public class GameCommands {
 
@@ -40,8 +40,7 @@ public class GameCommands {
         }
 
         System.out.println("\nTo move, type: 'room <name of the room>' or 'exit <name of the place>'\n");
-        Scanner sc = new Scanner(System.in);
-        String command = sc.nextLine().toLowerCase();
+        String command = InputHandler.getInput();
 
         if (command.startsWith("room ")) {
             String roomName = command.substring(5).trim();
@@ -99,6 +98,4 @@ public class GameCommands {
 
         return currentPlace;
     }
-
-
 }

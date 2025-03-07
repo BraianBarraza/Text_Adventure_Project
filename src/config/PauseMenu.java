@@ -1,7 +1,5 @@
 package config;
 
-import java.util.Scanner;
-
 public class PauseMenu {
 
     public static void menuContinueCurrentGame() {
@@ -17,10 +15,7 @@ public class PauseMenu {
     }
 
     public static void exitWithoutExit() {
-        Scanner sc = new Scanner(System.in);
-        System.out.print("Are you sure you want to exit without saving? (Y/N): ");
-        String response = sc.nextLine().trim().toLowerCase();
-        if (response.equals("y")) {
+        if (InputHandler.askYesNo("Are you sure you want to exit without saving?")) {
             System.out.println("Exiting game without saving. Goodbye!");
             System.exit(0);
         } else {
