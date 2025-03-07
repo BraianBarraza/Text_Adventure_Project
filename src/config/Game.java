@@ -37,8 +37,8 @@ public class Game {
             } else if ((choice.equals("3") || choice.equals("save")) && gameStarted) {
                 PauseMenu.menuSaveGameOption(new GameState(currentPlace, player));
             } else if (choice.equals("4") || choice.equals("exit")) {
-                running = false;
                 System.out.println("Exiting game.");
+                running = false;
             } else if (choice.equals("5") || choice.equals("pause")) {
                 showPauseMenu();
             } else {
@@ -51,7 +51,11 @@ public class Game {
         System.out.println();
         System.out.println("Main Menu");
         System.out.println("1. Start Game");
-        System.out.println("2. Load Game");
+        if (gameStarted){
+            System.out.println("2. Load Game");
+        }else{
+            System.out.println("2. (Locked) Load Game");
+        }
         if (gameStarted) {
             System.out.println("3. Save Game");
         } else {
